@@ -1,0 +1,84 @@
+package br.com.rhscdeveloper.dto;
+
+import static java.util.Objects.isNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import br.com.rhscdeveloper.enumerator.Enums.TipoRequest;
+import br.com.rhscdeveloper.model.VeiculoVO;
+import br.com.rhscdeveloper.util.MensagemResposta;
+
+public class VeiculoRespostaDTO {
+
+	private List<VeiculoDTO> veiculos;
+	private String mensagem;
+	private Long quantidade;
+	private Integer pagina;
+	
+	public static VeiculoRespostaDTO newInstance(Collection<VeiculoVO> veiculosPersistentes, TipoRequest tipoRequest) {
+		
+		List<VeiculoDTO> veiculos = new ArrayList<VeiculoDTO>();
+		VeiculoRespostaDTO resposta = new VeiculoRespostaDTO();
+		String mensagem = veiculosPersistentes.isEmpty() && !tipoRequest.equals(TipoRequest.EXCLUIR)
+				? "Não foram encontrados registros" 
+				: new MensagemResposta<VeiculoVO>().gerarMensagem(tipoRequest, VeiculoVO.class);
+		
+		veiculosPersistentes.stream().map(
+			vo -> new VeiculoDTO.Builder()
+				.setCor(vo.getCor())
+				.setDtRegistro(vo.getDtRegistro())
+				.setId(vo.getId())
+				.setModelo(vo.getModelo())
+				.setMontadora(vo.getMontadora())
+				.setPlaca(vo.getPlaca())
+				.setVersao(vo.getVersao()).build()
+		).forEach(veiculos::add);
+		
+		resposta.setVeiculos(veiculos);
+		resposta.setQuantidade(Long.valueOf(veiculos.size()));
+		resposta.setPagina(1);
+		resposta.setMensagem(mensagem);
+		
+		return resposta;
+	}
+	
+	public static VeiculoRespostaDTO newInstance(Collection<VeiculoVO> veiculosPersistentes, VeiculoDTO dto, TipoRequest tipoRequest) {
+		VeiculoRespostaDTO resposta = newInstance(veiculosPersistentes, tipoRequest);
+		resposta.setPagina(isNull(dto) || dto.getPagina() == null ? 1 : dto.getPagina());
+		return resposta;
+	}
+
+	public List<VeiculoDTO> getVeiculos() {
+		return veiculos;
+	}
+
+	public void setVeiculos(List<VeiculoDTO> veiculos) {
+		this.veiculos = veiculos;
+	}
+
+	public String getMensagem() {
+		return mensagem;
+	}
+
+	public void setMensagem(String mensagem) {
+		this.mensagem = mensagem;
+	}
+
+	public Long getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(Long quantidade) {
+		this.quantidade = quantidade;
+	}
+
+	public Integer getPagina() {
+		return pagina;
+	}
+
+	public void setPagina(Integer pagina) {
+		this.pagina = pagina;
+	}
+}

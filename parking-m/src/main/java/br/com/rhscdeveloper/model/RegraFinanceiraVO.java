@@ -9,6 +9,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import br.com.rhscdeveloper.enumerator.Enums.Situacao;
 import br.com.rhscdeveloper.enumerator.Enums.TipoCobranca;
 import br.com.rhscdeveloper.enumerator.Enums.TipoMovimento;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import jakarta.persistence.Version;
 @Entity
 @DynamicUpdate
 @Table(name = "tb_regra_financeira")
-public class RegraFinanceiraVO implements Serializable {
+public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -56,6 +57,18 @@ public class RegraFinanceiraVO implements Serializable {
 	
 	public RegraFinanceiraVO() {
 		
+	}
+
+	public RegraFinanceiraVO(String descricao, Double valor, TipoCobranca tipoCobranca, TipoMovimento tipoMovimento,
+			Date dtHrInicioValidade, Date dtHrFimValidade, Situacao situacao, Date versao) {
+		this.descricao = descricao;
+		this.valor = valor;
+		this.tipoCobranca = tipoCobranca.getId();
+		this.tipoMovimento = tipoMovimento.getId();
+		this.dtHrInicioValidade = dtHrInicioValidade;
+		this.dtHrFimValidade = dtHrFimValidade;
+		this.situacao = situacao.getId();
+		this.versao = versao;
 	}
 
 	public RegraFinanceiraVO(Integer id, String descricao, Double valor, TipoCobranca tipoCobranca, TipoMovimento tipoMovimento,

@@ -3,11 +3,16 @@ package br.com.rhscdeveloper.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import br.com.rhscdeveloper.dto.VeiculoDTO;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +26,7 @@ import jakarta.persistence.Version;
 @Entity
 @DynamicUpdate
 @Table(name = "tb_veiculo", indexes = {@Index(name="ix_veiculo_01", columnList = "vei_placa")})
-public class VeiculoVO implements Serializable {
+public class VeiculoVO extends PanacheEntityBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -36,7 +41,7 @@ public class VeiculoVO implements Serializable {
 	@Column(name = "vei_montadora", nullable = false)
 	private String montadora;
 	
-	@Column(name = "vei_dt_registro", nullable = false)
+	@Column(name = "ve_dt_registro", nullable = false)
 	private Date dtRegistro;
 	
 	@Column(name = "vei_placa", nullable = false, unique = true, length = 7)
@@ -54,6 +59,15 @@ public class VeiculoVO implements Serializable {
 	
 	public VeiculoVO() {
 		
+	}
+
+	public VeiculoVO(String modelo, String montadora, Date dtRegistro, String placa, String cor, Date versao) {
+		this.modelo = modelo;
+		this.montadora = montadora;
+		this.dtRegistro = dtRegistro;
+		this.placa = placa;
+		this.cor = cor;
+		this.versao = versao;
 	}
 
 	public VeiculoVO(Integer id, String modelo, String montadora, Date dtRegistro, String placa, String cor, Date versao) {
@@ -74,7 +88,7 @@ public class VeiculoVO implements Serializable {
 		this.id = id;
 	}
 
-	public String getModel() {
+	public String getModelo() {
 		return modelo;
 	}
 
@@ -148,4 +162,65 @@ public class VeiculoVO implements Serializable {
 			movimentos.forEach(this.movimentos::add);
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "VeiculoVO [id=" + id + ", modelo=" + modelo + ", montadora=" + montadora + ", dtRegistro=" + dtRegistro
+				+ ", placa=" + placa + ", cor=" + cor + ", versao=" + versao + "]";
+	}
+
+	public static VeiculoVO veiculoToVeiculo(VeiculoVO voPersistente, VeiculoDTO vo) {
+		voPersistente.id = vo.getId();
+		voPersistente.modelo = vo.getModelo();
+		voPersistente.montadora = vo.getMontadora();
+		voPersistente.dtRegistro = vo.getDtRegistro();
+		voPersistente.placa = vo.getPlaca();
+		voPersistente.cor = vo.getCor();
+		voPersistente.versao = vo.getVersao();
+		
+		return voPersistente;
+	}
+	
+	public static VeiculoVO findByPlaca(String placa) {
+		return find("placa", placa).firstResult();
+	}
+	
+	public static List<VeiculoVO> findByMontadora(String montadora) {
+		return find("montadora like ?1", "".concat("%").concat(montadora).concat("%")).list();
+	}
+	
+	public static List<VeiculoVO> findAll(VeiculoDTO filtro){
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		StringBuilder sb = new StringBuilder("1 = 1");
+		
+		if(filtro.getId() != null && filtro.getId() != 0) {
+			sb.append(" and id =: id");
+			parametros.put("id", filtro.getId());
+		}
+		
+		if(filtro.getModelo() != null && !filtro.getModelo().isBlank()) {
+			sb.append(" and modelo =: modelo");
+			parametros.put("modelo", filtro.getModelo());
+		}
+		
+		if(filtro.getMontadora() != null && !filtro.getMontadora().isBlank()) {
+			sb.append(" and montadora =: montadora");
+			parametros.put("montadora", filtro.getMontadora());
+		}
+		
+		if(filtro.getPlaca() != null && !filtro.getPlaca().isBlank()) {
+			sb.append(" and placa =: placa");
+			parametros.put("placa", filtro.getPlaca());
+		}
+		
+		if(filtro.getCor() != null && !filtro.getCor().isBlank()) {
+			sb.append(" and cor =: cor");
+			parametros.put("cor", filtro.getCor());
+		}
+		
+		PanacheQuery<VeiculoVO> query = find(sb.toString(), parametros);
+		
+		return query.list();
+	}
+	
 }

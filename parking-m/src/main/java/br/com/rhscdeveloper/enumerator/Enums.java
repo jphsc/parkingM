@@ -73,7 +73,7 @@ public class Enums {
 		DIAUTIL(8, "Dia Util"),
 		FINALSEMANA(9, "Final de Semana"),
 		MENSALISTA(10, "Mensalista"),
-		INDIFERENTE(11, "Indiferente");
+		INDIFERENTE(11, "Indiferente"), ;
 		
 		private Integer id;
 		private String descricao;
@@ -101,6 +101,30 @@ public class Enums {
 		private String descricao;
 		
 		private SituacaoMovimento(Integer id, String descricao) {
+			this.id = id;
+			this.descricao = descricao;
+		}
+
+		public Integer getId() {
+			return id;
+		}
+
+		public String getDescricao() {
+			return descricao;
+		}
+	}
+	
+	public enum TipoRequest {
+		
+		CONSULTAR(14, "Aberto"),
+		CADASTRAR(15, "Encerrado"),
+		EDITAR(16, "Encerrado"),
+		EXCLUIR(17, "Encerrado");
+		
+		private Integer id;
+		private String descricao;
+		
+		private TipoRequest(Integer id, String descricao) {
 			this.id = id;
 			this.descricao = descricao;
 		}

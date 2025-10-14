@@ -8,6 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import br.com.rhscdeveloper.enumerator.Enums.SituacaoMovimento;
 import br.com.rhscdeveloper.enumerator.Enums.TipoMovimento;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,7 +25,7 @@ import jakarta.persistence.Version;
 @Entity
 @DynamicUpdate
 @Table(name = "tb_movimento_veiculo")
-public class MovimentoVeiculoVO implements Serializable {
+public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -36,16 +37,16 @@ public class MovimentoVeiculoVO implements Serializable {
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "mvv_veiculo", nullable = false, updatable = false, referencedColumnName = "vei_id", 
 			foreignKey = @ForeignKey(name = "fk_movimentoveiculo_veiculo_01"))
-	private VeiculoVO veiculo;
+	private VeiculoVO veiculoVO;
+	
+	@Column(name = "mvv_tipo_movimento", nullable = false)
+	private Integer tipoMovimento;
 	
 	@Column(name = "mvv_dt_hr_entrada", nullable = false)
 	private Date dtHrEntrada;
 
 	@Column(name = "mvv_dt_hr_saida", nullable = false)
 	private Date dtHrSaida;
-	
-	@Column(name = "mvv_tp_movimento", nullable = false)
-	private Integer tipoMovimento;
 	
 	@Column(name = "mvv_situacao", nullable = false)
 	private Integer situacao;
@@ -58,13 +59,23 @@ public class MovimentoVeiculoVO implements Serializable {
 		
 	}
 
-	public MovimentoVeiculoVO(Integer id, VeiculoVO veiculo, Date dtHrEntrada, Date dtHrSaida, TipoMovimento tipoMovimento,
+	public MovimentoVeiculoVO(VeiculoVO veiculoVO, TipoMovimento tipoMovimento, Date dtHrEntrada, Date dtHrSaida, 
 			SituacaoMovimento situacao, Date versao) {
-		this.id = id;
-		this.veiculo = veiculo;
+		this.veiculoVO = veiculoVO;
+		this.tipoMovimento = tipoMovimento.getId();
 		this.dtHrEntrada = dtHrEntrada;
 		this.dtHrSaida = dtHrSaida;
+		this.situacao = situacao.getId();
+		this.versao = versao;
+	}
+
+	public MovimentoVeiculoVO(Integer id, VeiculoVO veiculoVO, TipoMovimento tipoMovimento, Date dtHrEntrada, Date dtHrSaida, 
+			SituacaoMovimento situacao, Date versao) {
+		this.id = id;
+		this.veiculoVO = veiculoVO;
 		this.tipoMovimento = tipoMovimento.getId();
+		this.dtHrEntrada = dtHrEntrada;
+		this.dtHrSaida = dtHrSaida;
 		this.situacao = situacao.getId();
 		this.versao = versao;
 	}
@@ -78,13 +89,21 @@ public class MovimentoVeiculoVO implements Serializable {
 	}
 
 	public VeiculoVO getVeiculo() {
-		return veiculo;
+		return veiculoVO;
 	}
 
-	public void setVeiculo(VeiculoVO veiculo) {
-		this.veiculo = veiculo;
+	public void setVeiculo(VeiculoVO veiculoVO) {
+		this.veiculoVO = veiculoVO;
 	}
 
+	public Integer getTipoMovimento() {
+		return tipoMovimento;
+	}
+
+	public void setTipoMovimento(TipoMovimento tipoMovimento) {
+		this.tipoMovimento = tipoMovimento.getId();
+	}
+	
 	public Date getDtHrEntrada() {
 		return dtHrEntrada;
 	}
@@ -99,14 +118,6 @@ public class MovimentoVeiculoVO implements Serializable {
 
 	public void setDtHrSaida(Date dtHrSaida) {
 		this.dtHrSaida = dtHrSaida;
-	}
-
-	public Integer getTipoMovimento() {
-		return tipoMovimento;
-	}
-
-	public void setTipoMovimento(TipoMovimento tipoMovimento) {
-		this.tipoMovimento = tipoMovimento.getId();
 	}
 
 	public Integer getSituacao() {

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -18,8 +19,8 @@ import jakarta.persistence.Table;
 @DynamicUpdate
 @Table(name = "tb_movimento_financeiro")
 @IdClass(MovimentoFinanceiroId.class)
-public class MovimentoFinanceiroVO implements Serializable {
-
+public class MovimentoFinanceiroVO extends PanacheEntityBase implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -32,12 +33,6 @@ public class MovimentoFinanceiroVO implements Serializable {
     @JoinColumn(name = "mvf_movimento", insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_movfinanceiro_movveiculo_01"))
     private MovimentoVeiculoVO idMovimento;
 	
-	@Column(name = "mvf_tipo_movimento", nullable = false)
-	private Integer tipoMovimento;
-	
-	@Column(name = "mvf_situacao_movimento", nullable = false)
-	private Integer situacaoMovimento;
-	
 	@Column(name = "mvf_valor", nullable = false, precision = 2)
 	private Double valor;
 	
@@ -48,12 +43,9 @@ public class MovimentoFinanceiroVO implements Serializable {
 		
 	}
 
-	public MovimentoFinanceiroVO(RegraFinanceiraVO idRegra, MovimentoVeiculoVO idMovimento, RegraFinanceiraVO regra,
-			MovimentoVeiculoVO movimento, Integer tipoMovimento, Integer situacaoMovimento, Double valor, Date versao) {
+	public MovimentoFinanceiroVO(RegraFinanceiraVO regra, MovimentoVeiculoVO movimento, Double valor, Date versao) {
 		this.idRegra = regra;
 		this.idMovimento = movimento;
-		this.tipoMovimento = tipoMovimento;
-		this.situacaoMovimento = situacaoMovimento;
 		this.valor = valor;
 		this.versao = versao;
 	}
@@ -72,22 +64,6 @@ public class MovimentoFinanceiroVO implements Serializable {
 
 	public void setMovimento(MovimentoVeiculoVO idMovimento) {
 		this.idMovimento = idMovimento;
-	}
-
-	public Integer getTipoMovimento() {
-		return tipoMovimento;
-	}
-
-	public void setTipoMovimento(Integer tipoMovimento) {
-		this.tipoMovimento = tipoMovimento;
-	}
-
-	public Integer getSituacaoMovimento() {
-		return situacaoMovimento;
-	}
-
-	public void setSituacaoMovimento(Integer situacaoMovimento) {
-		this.situacaoMovimento = situacaoMovimento;
 	}
 
 	public Double getValor() {
