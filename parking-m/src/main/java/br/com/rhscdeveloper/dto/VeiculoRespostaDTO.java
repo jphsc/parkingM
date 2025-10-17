@@ -17,15 +17,15 @@ public class VeiculoRespostaDTO {
 	private Long quantidade;
 	private Integer pagina;
 	
-	public static VeiculoRespostaDTO newInstance(Collection<VeiculoVO> veiculosPersistentes, TipoRequest tipoRequest) {
+	public static VeiculoRespostaDTO newInstance(Collection<VeiculoVO> registrosPersistentes, TipoRequest tipoRequest) {
 		
-		List<VeiculoDTO> veiculos = new ArrayList<VeiculoDTO>();
+		List<VeiculoDTO> registros = new ArrayList<VeiculoDTO>();
 		VeiculoRespostaDTO resposta = new VeiculoRespostaDTO();
-		String mensagem = veiculosPersistentes.isEmpty() && !tipoRequest.equals(TipoRequest.EXCLUIR)
-				? "Não foram encontrados registros" 
+		String mensagem = registrosPersistentes.isEmpty() && !tipoRequest.equals(TipoRequest.EXCLUIR)
+				? "Não foram encontrados veiculos" 
 				: new MensagemResposta<VeiculoVO>().gerarMensagem(tipoRequest, VeiculoVO.class);
 		
-		veiculosPersistentes.stream().map(
+		registrosPersistentes.stream().map(
 			vo -> new VeiculoDTO.Builder()
 				.setCor(vo.getCor())
 				.setDtRegistro(vo.getDtRegistro())
@@ -34,11 +34,11 @@ public class VeiculoRespostaDTO {
 				.setMontadora(vo.getMontadora())
 				.setPlaca(vo.getPlaca())
 				.setVersao(vo.getVersao()).build()
-		).forEach(veiculos::add);
+		).forEach(registros::add);
 		
-		resposta.setVeiculos(veiculos);
-		resposta.setQuantidade(Long.valueOf(veiculos.size()));
-		resposta.setPagina(1);
+		resposta.setVeiculos(registros);
+		resposta.setQuantidade(Long.valueOf(registros.size()));
+		resposta.setPagina(1); // TODO Paginacao
 		resposta.setMensagem(mensagem);
 		
 		return resposta;
@@ -54,8 +54,8 @@ public class VeiculoRespostaDTO {
 		return veiculos;
 	}
 
-	public void setVeiculos(List<VeiculoDTO> veiculos) {
-		this.veiculos = veiculos;
+	public void setVeiculos(List<VeiculoDTO> registros) {
+		this.veiculos = registros;
 	}
 
 	public String getMensagem() {

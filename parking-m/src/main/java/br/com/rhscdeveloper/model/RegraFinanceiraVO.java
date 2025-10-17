@@ -2,14 +2,16 @@ package br.com.rhscdeveloper.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.hibernate.annotations.DynamicUpdate;
 
-import br.com.rhscdeveloper.enumerator.Enums.Situacao;
-import br.com.rhscdeveloper.enumerator.Enums.TipoCobranca;
-import br.com.rhscdeveloper.enumerator.Enums.TipoMovimento;
+import br.com.rhscdeveloper.dto.RegraFinanceiraDTO;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,7 +32,7 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 	@Column(name = "ref_id")
 	private Integer id;
 	
-	@Column(name = "ref_description", nullable = false)
+	@Column(name = "ref_descricao", nullable = false)
 	private String descricao;
 	
 	@Column(name = "ref_valor", nullable = false, precision = 2)
@@ -59,28 +61,28 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		
 	}
 
-	public RegraFinanceiraVO(String descricao, Double valor, TipoCobranca tipoCobranca, TipoMovimento tipoMovimento,
-			Date dtHrInicioValidade, Date dtHrFimValidade, Situacao situacao, Date versao) {
+	public RegraFinanceiraVO(String descricao, Double valor, Integer tipoCobranca, Integer tipoMovimento,
+			Date dtHrInicioValidade, Date dtHrFimValidade, Integer situacao, Date versao) {
 		this.descricao = descricao;
 		this.valor = valor;
-		this.tipoCobranca = tipoCobranca.getId();
-		this.tipoMovimento = tipoMovimento.getId();
+		this.tipoCobranca = tipoCobranca;
+		this.tipoMovimento = tipoMovimento;
 		this.dtHrInicioValidade = dtHrInicioValidade;
 		this.dtHrFimValidade = dtHrFimValidade;
-		this.situacao = situacao.getId();
+		this.situacao = situacao;
 		this.versao = versao;
 	}
 
-	public RegraFinanceiraVO(Integer id, String descricao, Double valor, TipoCobranca tipoCobranca, TipoMovimento tipoMovimento,
-			Date dtHrInicioValidade, Date dtHrFimValidade, Situacao situacao, Date versao) {
+	public RegraFinanceiraVO(Integer id, String descricao, Double valor, Integer tipoCobranca, Integer tipoMovimento,
+			Date dtHrInicioValidade, Date dtHrFimValidade, Integer situacao, Date versao) {
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
-		this.tipoCobranca = tipoCobranca.getId();
-		this.tipoMovimento = tipoMovimento.getId();
+		this.tipoCobranca = tipoCobranca;
+		this.tipoMovimento = tipoMovimento;
 		this.dtHrInicioValidade = dtHrInicioValidade;
 		this.dtHrFimValidade = dtHrFimValidade;
-		this.situacao = situacao.getId();
+		this.situacao = situacao;
 		this.versao = versao;
 	}
 
@@ -112,16 +114,16 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		return tipoCobranca;
 	}
 
-	public void setTipoCobranca(TipoCobranca tipoCobranca) {
-		this.tipoCobranca = tipoCobranca.getId();
+	public void setTipoCobranca(Integer tipoCobranca) {
+		this.tipoCobranca = tipoCobranca;
 	}
 
 	public Integer getTipoMovimento() {
 		return tipoMovimento;
 	}
 
-	public void setTipoMovimento(TipoMovimento tipoMovimento) {
-		this.tipoMovimento = tipoMovimento.getId();
+	public void setTipoMovimento(Integer tipoMovimento) {
+		this.tipoMovimento = tipoMovimento;
 	}
 
 	public Date getDtHrInicioValidade() {
@@ -144,8 +146,8 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		return situacao;
 	}
 
-	public void setSituacao(Situacao situacao) {
-		this.situacao = situacao.getId();
+	public void setSituacao(Integer situacao) {
+		this.situacao = situacao;
 	}
 
 	public Date getVersao() {
@@ -173,4 +175,68 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		return Objects.equals(id, other.id);
 	}
 
+	@Override
+	public String toString() {
+		return "RegraFinanceiraVO [id=" + id + ", descricao=" + descricao + ", valor=" + valor + ", tipoCobranca="
+				+ tipoCobranca + ", tipoMovimento=" + tipoMovimento + ", dtHrInicioValidade=" + dtHrInicioValidade
+				+ ", dtHrFimValidade=" + dtHrFimValidade + ", situacao=" + situacao + ", versao=" + versao + "]";
+	}
+
+	public static RegraFinanceiraVO dtoToVo(RegraFinanceiraVO voPersistente, RegraFinanceiraDTO dto) {
+		voPersistente.id = dto.getId();
+		voPersistente.descricao = dto.getDescricao();
+		voPersistente.valor = dto.getValor();
+		voPersistente.tipoCobranca = dto.getTipoCobranca();
+		voPersistente.tipoMovimento = dto.getTipoMovimento();
+		voPersistente.dtHrInicioValidade = dto.getDtHrInicioValidade();
+		voPersistente.dtHrFimValidade = dto.getDtHrFimValidade();
+		voPersistente.situacao = dto.getSituacao();
+		voPersistente.versao = dto.getVersao();
+		
+		return voPersistente;
+	}
+	
+	public static List<RegraFinanceiraVO> findByDescricao(String descricao) {
+		return find("descricao like ?1", "".concat("%").concat(descricao).concat("%")).list();
+	}
+	
+	// TODO Paginar	
+	public static List<RegraFinanceiraVO> findAll(RegraFinanceiraDTO filtro){
+		Map<String, Object> parametros = new HashMap<String, Object>();
+		StringBuilder sb = new StringBuilder("1 = 1");
+		
+		if(filtro.getDescricao() != null && !filtro.getDescricao().isBlank()) {
+			sb.append(" and descricao =: descricao");
+			parametros.put("descricao", filtro.getDescricao());
+		}
+		
+		if(filtro.getValor() != null && filtro.getValor() > 0) {
+			sb.append(" and valor =: valor");
+			parametros.put("valor", filtro.getValor());
+		}
+		
+		if(filtro.getTipoCobranca() != null && filtro.getTipoCobranca() > 0) {
+			sb.append(" and tipoCobranca =: tipoCobranca");
+			parametros.put("tipoCobranca", filtro.getTipoCobranca());
+		}
+		
+		if(filtro.getTipoMovimento() != null && filtro.getTipoMovimento() > 0) {
+			sb.append(" and tipoMovimento =: tipoMovimento");
+			parametros.put("tipoMovimento", filtro.getTipoMovimento());
+		}
+		
+		if(filtro.getDtHrFimValidade() != null && filtro.getDtHrFimValidade() == null) {
+			sb.append(" and dtHrFimValidade =: dtHrFimValidade");
+			parametros.put("dtHrFimValidade", filtro.getDtHrFimValidade());
+		}
+		
+		if(filtro.getSituacao() != null && filtro.getSituacao() != 0) {
+			sb.append(" and situacao =: situacao");
+			parametros.put("situacao", filtro.getSituacao());
+		}
+		
+		PanacheQuery<RegraFinanceiraVO> query = find(sb.toString(), parametros);
+		
+		return query.list();
+	}
 }

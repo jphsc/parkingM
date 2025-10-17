@@ -8,10 +8,10 @@ import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class VeiculoExceptionMapper implements ExceptionMapper<VeiculoException> {
+public class GlobalExceptionMapper implements ExceptionMapper<GlobalException> {
 	
 	@Override
-	public Response toResponse(VeiculoException e) {
+	public Response toResponse(GlobalException e) {
 
         ErroDTO erroResposta = new ErroDTO(e.getCodigoErro(), e.getMensagem());
         

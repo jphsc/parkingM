@@ -4,14 +4,13 @@ import br.com.rhscdeveloper.enumerator.Enums.TipoRequest;
 
 public class MensagemResposta<T> {
 	
-	public String gerarMensagem(TipoRequest tipoRequest, Class<T> classe) {
+	public String gerarMensagem(TipoRequest tipoRequest, Class<?> classe) {
 
 		String mensagem = "";
 		String objeto = classe.getCanonicalName();
 		String nHierarquiaObj[] = objeto.split("\\.");
 		String nomeClasseCompleto = nHierarquiaObj[nHierarquiaObj.length - 1];
 		String nomeClasse = nomeClasseCompleto.substring(0, nomeClasseCompleto.length()-2);
-		System.out.println(objeto);
 		
 		switch(tipoRequest){
 		case CONSULTAR:

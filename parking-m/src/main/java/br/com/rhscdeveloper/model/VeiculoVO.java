@@ -169,14 +169,14 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 				+ ", placa=" + placa + ", cor=" + cor + ", versao=" + versao + "]";
 	}
 
-	public static VeiculoVO veiculoToVeiculo(VeiculoVO voPersistente, VeiculoDTO vo) {
-		voPersistente.id = vo.getId();
-		voPersistente.modelo = vo.getModelo();
-		voPersistente.montadora = vo.getMontadora();
-		voPersistente.dtRegistro = vo.getDtRegistro();
-		voPersistente.placa = vo.getPlaca();
-		voPersistente.cor = vo.getCor();
-		voPersistente.versao = vo.getVersao();
+	public static VeiculoVO dtoToVo(VeiculoVO voPersistente, VeiculoDTO dto) {
+		voPersistente.id = dto.getId();
+		voPersistente.modelo = dto.getModelo();
+		voPersistente.montadora = dto.getMontadora();
+		voPersistente.dtRegistro = dto.getDtRegistro();
+		voPersistente.placa = dto.getPlaca();
+		voPersistente.cor = dto.getCor();
+		voPersistente.versao = dto.getVersao();
 		
 		return voPersistente;
 	}
@@ -189,6 +189,7 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 		return find("montadora like ?1", "".concat("%").concat(montadora).concat("%")).list();
 	}
 	
+	// TODO Paginar	
 	public static List<VeiculoVO> findAll(VeiculoDTO filtro){
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		StringBuilder sb = new StringBuilder("1 = 1");
@@ -222,5 +223,4 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 		
 		return query.list();
 	}
-	
 }
