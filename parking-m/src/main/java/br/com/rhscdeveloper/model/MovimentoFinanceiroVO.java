@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import br.com.rhscdeveloper.enumerator.Enums.SituacaoMovimento;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,8 +34,11 @@ public class MovimentoFinanceiroVO extends PanacheEntityBase implements Serializ
     @JoinColumn(name = "mvf_movimento", insertable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_movfinanceiro_movveiculo_01"))
     private MovimentoVeiculoVO idMovimento;
 	
-	@Column(name = "mvf_valor", nullable = false, precision = 2)
+	@Column(name = "mvf_valor", nullable = true, precision = 2)
 	private Double valor;
+	
+	@Column(name = "mvf_situacao", nullable = false)
+	private Integer situacao;
 	
 	@Column(name = "mvf_versao", nullable = false)
 	private Date versao;
@@ -43,10 +47,11 @@ public class MovimentoFinanceiroVO extends PanacheEntityBase implements Serializ
 		
 	}
 
-	public MovimentoFinanceiroVO(RegraFinanceiraVO regra, MovimentoVeiculoVO movimento, Double valor, Date versao) {
+	public MovimentoFinanceiroVO(RegraFinanceiraVO regra, MovimentoVeiculoVO movimento, Double valor, SituacaoMovimento situacao, Date versao) {
 		this.idRegra = regra;
 		this.idMovimento = movimento;
 		this.valor = valor;
+		this.situacao = situacao.getId();
 		this.versao = versao;
 	}
 
@@ -70,6 +75,14 @@ public class MovimentoFinanceiroVO extends PanacheEntityBase implements Serializ
 		return valor;
 	}
 
+	public void setSituacao(SituacaoMovimento situacao) {
+		this.situacao = situacao.getId();
+	}
+
+	public Integer getSituacao() {
+		return situacao;
+	}
+
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
@@ -81,4 +94,11 @@ public class MovimentoFinanceiroVO extends PanacheEntityBase implements Serializ
 	public void setVersao(Date versao) {
 		this.versao = versao;
 	}
+
+	@Override
+	public String toString() {
+		return "MovimentoFinanceiroVO [idRegra=" + idRegra + ", idMovimento=" + idMovimento + ", valor=" + valor
+				+ ", situacao=" + situacao + ", versao=" + versao + "]";
+	}
+	
 }

@@ -12,10 +12,9 @@ public class GlobalExceptionMapper implements ExceptionMapper<GlobalException> {
 	
 	@Override
 	public Response toResponse(GlobalException e) {
-
+		
+		Status statusCode = Status.INTERNAL_SERVER_ERROR;
         ErroDTO erroResposta = new ErroDTO(e.getCodigoErro(), e.getMensagem());
-        
-        Status statusCode = Status.INTERNAL_SERVER_ERROR;
         
         if(e.getCodigoErro() == ConstantesSistema.COD_ERRO_INEXISTENTE) {
         	statusCode = Status.NOT_FOUND;
@@ -25,9 +24,6 @@ public class GlobalExceptionMapper implements ExceptionMapper<GlobalException> {
         	statusCode = Status.BAD_REQUEST;
         }
         
-        return Response
-        		.status(statusCode)
-        		.entity(erroResposta)
-                .build();
+        return Response.status(statusCode).entity(erroResposta).build();
 	}
 }

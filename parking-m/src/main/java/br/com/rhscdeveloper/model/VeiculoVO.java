@@ -2,6 +2,7 @@ package br.com.rhscdeveloper.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ import jakarta.persistence.Version;
 @Entity
 @DynamicUpdate
 @Table(name = "tb_veiculo", indexes = {@Index(name="ix_veiculo_01", columnList = "vei_placa")})
-public class VeiculoVO extends PanacheEntityBase implements Serializable {
+public class VeiculoVO extends PanacheEntityBase implements Serializable, Comparable<VeiculoVO> {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -47,9 +48,6 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 	@Column(name = "vei_placa", nullable = false, unique = true, length = 7)
 	private String placa;
 	
-	@Column(name = "vei_cor", nullable = false)
-	private String cor;
-	
 	@Version
 	@Column(name = "vei_versao", nullable = false)
 	private Date versao;
@@ -61,22 +59,20 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 		
 	}
 
-	public VeiculoVO(String modelo, String montadora, Date dtRegistro, String placa, String cor, Date versao) {
+	public VeiculoVO(String modelo, String montadora, Date dtRegistro, String placa, Date versao) {
 		this.modelo = modelo;
 		this.montadora = montadora;
 		this.dtRegistro = dtRegistro;
-		this.placa = placa;
-		this.cor = cor;
+		this.placa = placa.toUpperCase();
 		this.versao = versao;
 	}
 
-	public VeiculoVO(Integer id, String modelo, String montadora, Date dtRegistro, String placa, String cor, Date versao) {
+	public VeiculoVO(Integer id, String modelo, String montadora, Date dtRegistro, String placa, Date versao) {
 		this.id = id;
 		this.modelo = modelo;
 		this.montadora = montadora;
 		this.dtRegistro = dtRegistro;
-		this.placa = placa;
-		this.cor = cor;
+		this.placa = placa.toUpperCase();
 		this.versao = versao;
 	}
 
@@ -117,15 +113,7 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 	}
 
 	public void setPlaca(String placa) {
-		this.placa = placa;
-	}
-
-	public String getCor() {
-		return cor;
-	}
-
-	public void setCor(String cor) {
-		this.cor = cor;
+		this.placa = placa.toUpperCase();
 	}
 
 	public Date getVersao() {
@@ -152,8 +140,20 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 		VeiculoVO other = (VeiculoVO) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	@Override
+	public String toString() {
+		return "VeiculoVO [id=" + id + ", modelo=" + modelo + ", montadora=" + montadora + ", dtRegistro=" + dtRegistro
+				+ ", placa=" + placa + ", versao=" + versao + "]";
+	}
+
+	@Override
+	public int compareTo(VeiculoVO o) {
+		return this.id < o.getId() ? -1 : 1;
+	}
 	
 	public List<MovimentoVeiculoVO> getMovimentos(){
+		this.movimentos = MovimentoVeiculoVO.find("veiculo", this).list();
 		return this.movimentos;
 	}
 	
@@ -163,20 +163,13 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return "VeiculoVO [id=" + id + ", modelo=" + modelo + ", montadora=" + montadora + ", dtRegistro=" + dtRegistro
-				+ ", placa=" + placa + ", cor=" + cor + ", versao=" + versao + "]";
-	}
-
 	public static VeiculoVO dtoToVo(VeiculoVO voPersistente, VeiculoDTO dto) {
 		voPersistente.id = dto.getId();
 		voPersistente.modelo = dto.getModelo();
 		voPersistente.montadora = dto.getMontadora();
 		voPersistente.dtRegistro = dto.getDtRegistro();
-		voPersistente.placa = dto.getPlaca();
-		voPersistente.cor = dto.getCor();
-		voPersistente.versao = dto.getVersao();
+		voPersistente.placa = dto.getPlaca().toUpperCase();
+		voPersistente.versao = Objects.isNull(dto.getVersao()) ? new Date() : dto.getVersao();
 		
 		return voPersistente;
 	}
@@ -200,27 +193,29 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable {
 		}
 		
 		if(filtro.getModelo() != null && !filtro.getModelo().isBlank()) {
-			sb.append(" and modelo =: modelo");
+			sb.append(" and modelo like :modelo");
 			parametros.put("modelo", filtro.getModelo());
 		}
 		
 		if(filtro.getMontadora() != null && !filtro.getMontadora().isBlank()) {
-			sb.append(" and montadora =: montadora");
+			sb.append(" and montadora like :montadora");
 			parametros.put("montadora", filtro.getMontadora());
 		}
 		
 		if(filtro.getPlaca() != null && !filtro.getPlaca().isBlank()) {
 			sb.append(" and placa =: placa");
-			parametros.put("placa", filtro.getPlaca());
+			parametros.put("placa", filtro.getPlaca().toUpperCase());
 		}
 		
-		if(filtro.getCor() != null && !filtro.getCor().isBlank()) {
-			sb.append(" and cor =: cor");
-			parametros.put("cor", filtro.getCor());
+		if(filtro.getDtRegistro() != null && Objects.isNull(filtro.getDtRegistro())) {
+			sb.append(" and dtRegistro =: dtRegistro");
+			parametros.put("dtRegistro", filtro.getDtRegistro());
 		}
 		
 		PanacheQuery<VeiculoVO> query = find(sb.toString(), parametros);
 		
-		return query.list();
+		List<VeiculoVO> veiculos = query.list();
+		Collections.sort(veiculos);
+		return veiculos;
 	}
 }

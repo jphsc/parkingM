@@ -14,4 +14,6 @@ public class ConstantesSistema {
 	public static final String MSG_ERRO_VINCULO = "O registro solicitado possui vínculos que impedem a exclusão, verifique os vínculos.";
 	public static final String MSG_ERRO_ID = "O identificador do registro não foi informado, informe o identificador para realizar a operção desejada.";
 	public static final String MSG_ERRO_NULL = "Há campos obrigatórios que não foram informados no registro.";
+	public static final String MSG_ERRO_CAMPOS = "Há campos obrigatórios que não foram informados no registro.";
+	public static final String MSG_ERRO_ID_REGISTRO = "É necessário informar o id do registro";
 }

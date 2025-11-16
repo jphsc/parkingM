@@ -1,18 +1,18 @@
 package br.com.rhscdeveloper.util;
 
-import br.com.rhscdeveloper.enumerator.Enums.TipoRequest;
+import br.com.rhscdeveloper.enumerator.Enums.TipoOperacao;
 
-public class MensagemResposta<T> {
+public class MensagemResposta {
 	
-	public String gerarMensagem(TipoRequest tipoRequest, Class<?> classe) {
+	public String gerarMensagem(TipoOperacao tipoOperacao, Class<?> classe) {
 
 		String mensagem = "";
 		String objeto = classe.getCanonicalName();
-		String nHierarquiaObj[] = objeto.split("\\.");
-		String nomeClasseCompleto = nHierarquiaObj[nHierarquiaObj.length - 1];
-		String nomeClasse = nomeClasseCompleto.substring(0, nomeClasseCompleto.length()-2);
+		String nomeHierarquiaObj[] = objeto.split("\\.");
+		String nomeClasseVO = nomeHierarquiaObj[nomeHierarquiaObj.length - 1];
+		String nomeClasse = nomeClasseVO.substring(0, nomeClasseVO.length()-2);
 		
-		switch(tipoRequest){
+		switch(tipoOperacao){
 		case CONSULTAR:
 			mensagem = "Registro(s) de "+nomeClasse+" obtido(s) com sucesso";
 			break;

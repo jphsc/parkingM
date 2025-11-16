@@ -1,7 +1,28 @@
 package br.com.rhscdeveloper.enumerator;
 
+import java.lang.reflect.Method;
+import java.util.Arrays;
+
 public class Enums {
 
+	// último id reservado = 18
+	public static Object getEnum(Integer id) throws NoSuchMethodException, SecurityException, ClassNotFoundException {
+		
+		return Arrays.stream(Enums.class.getDeclaredClasses())
+		        .filter(Class::isEnum)
+		        .flatMap(c -> Arrays.stream(c.getEnumConstants()))
+		        .filter(e -> {
+		            try {
+		                Method getId = e.getClass().getMethod("getId");
+		                return id.equals(getId.invoke(e));
+		            } catch (Exception ex) {
+		                return false;
+		            }
+		        })
+		        .findFirst()
+		        .orElse(null);
+	}
+	
 	public enum Booleano {
 		
 		NAO(0, "Não"),
@@ -70,8 +91,9 @@ public class Enums {
 	}
 	
 	public enum TipoMovimento {
-		DIAUTIL(8, "Dia Util"),
-		FINALSEMANA(9, "Final de Semana"),
+		HORA(18, "Hora"),
+		DIA(8, "Dia Util"),
+		FINAL_SEMANA(9, "Final de Semana"),
 		MENSALISTA(10, "Mensalista"),
 		INDIFERENTE(11, "Indiferente"), ;
 		
@@ -114,17 +136,17 @@ public class Enums {
 		}
 	}
 	
-	public enum TipoRequest {
+	public enum TipoOperacao {
 		
-		CONSULTAR(14, "Aberto"),
-		CADASTRAR(15, "Encerrado"),
-		EDITAR(16, "Encerrado"),
-		EXCLUIR(17, "Encerrado");
+		CONSULTAR(14, "Ler"),
+		CADASTRAR(15, "Persistir"),
+		EDITAR(16, "Atualizar"),
+		EXCLUIR(17, "Deletar");
 		
 		private Integer id;
 		private String descricao;
 		
-		private TipoRequest(Integer id, String descricao) {
+		private TipoOperacao(Integer id, String descricao) {
 			this.id = id;
 			this.descricao = descricao;
 		}

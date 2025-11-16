@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import br.com.rhscdeveloper.enumerator.Enums.TipoRequest;
+import br.com.rhscdeveloper.enumerator.Enums.TipoOperacao;
 import br.com.rhscdeveloper.model.VeiculoVO;
 import br.com.rhscdeveloper.util.MensagemResposta;
 
@@ -17,17 +17,16 @@ public class VeiculoRespostaDTO {
 	private Long quantidade;
 	private Integer pagina;
 	
-	public static VeiculoRespostaDTO newInstance(Collection<VeiculoVO> registrosPersistentes, TipoRequest tipoRequest) {
+	public static VeiculoRespostaDTO newInstance(Collection<VeiculoVO> registrosPersistentes, TipoOperacao tipoOperacao) {
 		
 		List<VeiculoDTO> registros = new ArrayList<VeiculoDTO>();
 		VeiculoRespostaDTO resposta = new VeiculoRespostaDTO();
-		String mensagem = registrosPersistentes.isEmpty() && !tipoRequest.equals(TipoRequest.EXCLUIR)
+		String mensagem = registrosPersistentes.isEmpty() && !tipoOperacao.equals(TipoOperacao.EXCLUIR)
 				? "Não foram encontrados veiculos" 
-				: new MensagemResposta<VeiculoVO>().gerarMensagem(tipoRequest, VeiculoVO.class);
+				: new MensagemResposta().gerarMensagem(tipoOperacao, VeiculoVO.class);
 		
 		registrosPersistentes.stream().map(
 			vo -> new VeiculoDTO.Builder()
-				.setCor(vo.getCor())
 				.setDtRegistro(vo.getDtRegistro())
 				.setId(vo.getId())
 				.setModelo(vo.getModelo())
@@ -44,8 +43,8 @@ public class VeiculoRespostaDTO {
 		return resposta;
 	}
 	
-	public static VeiculoRespostaDTO newInstance(Collection<VeiculoVO> veiculosPersistentes, VeiculoDTO dto, TipoRequest tipoRequest) {
-		VeiculoRespostaDTO resposta = newInstance(veiculosPersistentes, tipoRequest);
+	public static VeiculoRespostaDTO newInstance(Collection<VeiculoVO> veiculosPersistentes, VeiculoDTO dto, TipoOperacao tipoOperacao) {
+		VeiculoRespostaDTO resposta = newInstance(veiculosPersistentes, tipoOperacao);
 		resposta.setPagina(isNull(dto) || dto.getPagina() == null ? 1 : dto.getPagina());
 		return resposta;
 	}

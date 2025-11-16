@@ -10,6 +10,7 @@ import br.com.rhscdeveloper.enumerator.Enums.Situacao;
 import br.com.rhscdeveloper.enumerator.Enums.SituacaoMovimento;
 import br.com.rhscdeveloper.enumerator.Enums.TipoCobranca;
 import br.com.rhscdeveloper.enumerator.Enums.TipoMovimento;
+import br.com.rhscdeveloper.exception.GlobalException;
 import br.com.rhscdeveloper.model.MovimentoFinanceiroVO;
 import br.com.rhscdeveloper.model.MovimentoVeiculoVO;
 import br.com.rhscdeveloper.model.RegraFinanceiraVO;
@@ -50,30 +51,37 @@ public class Configuration {
 	@Transactional
 	protected void init() {
 
-		if(VeiculoVO.findAll().list().isEmpty()) {
-			VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", new Date(), "OTO8226", "Branco", new Date()));
-			VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", new Date(), "OTO8221", "Branco", new Date()));
-			VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", new Date(), "OTO8228", "Branco", new Date()));
-		}
-		
-		if(RegraFinanceiraVO.findAll().list().isEmpty()) {
-			RegraFinanceiraVO.persist(new RegraFinanceiraVO("Hora semanal", 9.00, TipoCobranca.INDIFERENTE.getId(), TipoMovimento.DIAUTIL.getId(), new Date(), new Date(), Situacao.ATIVO.getId(), new Date()));
-			RegraFinanceiraVO.persist(new RegraFinanceiraVO("Hora final de semana", 7.00, TipoCobranca.INDIFERENTE.getId(), TipoMovimento.FINALSEMANA.getId(), new Date(), new Date(), Situacao.ATIVO.getId(), new Date()));
-			RegraFinanceiraVO.persist(new RegraFinanceiraVO("Mensalista em dinheiro", 250.00, TipoCobranca.DINHEIRO.getId(), TipoMovimento.MENSALISTA.getId(), new Date(), new Date(), Situacao.ATIVO.getId(), new Date()));
-			RegraFinanceiraVO.persist(new RegraFinanceiraVO("Mensalista no cartão", 270.00, TipoCobranca.CREDITO.getId(), TipoMovimento.MENSALISTA.getId(), new Date(), new Date(), Situacao.ATIVO.getId(), new Date()));
-			RegraFinanceiraVO.persist(new RegraFinanceiraVO("Fração de hora util indiferente", 5.00, TipoCobranca.INDIFERENTE.getId(), TipoMovimento.DIAUTIL.getId(), new Date(), new Date(), Situacao.ATIVO.getId(), new Date()));
-			RegraFinanceiraVO.persist(new RegraFinanceiraVO("Fração de hora final de semana indiferente", 4.00, TipoCobranca.INDIFERENTE.getId(), TipoMovimento.FINALSEMANA.getId(), new Date(), new Date(), Situacao.ATIVO.getId(), new Date()));
-		}
-		
-		if(MovimentoVeiculoVO.findAll().list().isEmpty()) {
-			MovimentoVeiculoVO.persist(new MovimentoVeiculoVO(VeiculoVO.findAll().firstResult(), TipoMovimento.DIAUTIL, new Date(), new Date(), SituacaoMovimento.ENCERRADO, new Date()));
-		}
-		
-		if(MovimentoFinanceiroVO.findAll().list().isEmpty()) {
-			RegraFinanceiraVO rf = RegraFinanceiraVO.findAll().firstResult();
-			MovimentoVeiculoVO mv = MovimentoVeiculoVO.findAll().firstResult();
+		try {
+//			applyMigrations();
 			
-			MovimentoFinanceiroVO.persist(new MovimentoFinanceiroVO(rf, mv, 2.00, new Date()));
+			if(VeiculoVO.findAll().list().isEmpty()) {
+				VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", new Date(), "OTO8226", new Date()));
+				VeiculoVO.persist(new VeiculoVO("Onix", "Chevrolet", new Date(), "OTO8221", new Date()));
+				VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", new Date(), "OTO8228", new Date()));
+			}
+			
+			if(RegraFinanceiraVO.findAll().list().isEmpty()) {
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Hora semanal", 9.00, TipoCobranca.INDIFERENTE, TipoMovimento.DIA, new Date(), new Date(), Situacao.ATIVO, new Date()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Hora final de semana", 7.00, TipoCobranca.INDIFERENTE, TipoMovimento.FINAL_SEMANA, new Date(), new Date(), Situacao.ATIVO, new Date()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Mensalista em dinheiro", 250.50, TipoCobranca.DINHEIRO, TipoMovimento.MENSALISTA, new Date(), new Date(), Situacao.ATIVO, new Date()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Mensalista no cartão", 270.79, TipoCobranca.CREDITO, TipoMovimento.MENSALISTA, new Date(), new Date(), Situacao.ATIVO, new Date()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Fração de hora util indiferente", 5.50, TipoCobranca.INDIFERENTE, TipoMovimento.DIA, new Date(), new Date(), Situacao.ATIVO, new Date()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Fração de hora final de semana indiferente", 4.00, TipoCobranca.INDIFERENTE, TipoMovimento.FINAL_SEMANA, new Date(), new Date(), Situacao.ATIVO, new Date()));
+			}
+			
+			if(MovimentoVeiculoVO.findAll().list().isEmpty()) {
+				MovimentoVeiculoVO.persist(new MovimentoVeiculoVO(VeiculoVO.findAll().firstResult(), TipoMovimento.DIA.getId(), new Date(), new Date(), SituacaoMovimento.ENCERRADO.getId(), new Date()));
+			}
+			
+			if(MovimentoFinanceiroVO.findAll().list().isEmpty()) {
+				RegraFinanceiraVO rf = RegraFinanceiraVO.findAll().firstResult();
+				MovimentoVeiculoVO mv = MovimentoVeiculoVO.findAll().firstResult();
+				
+				MovimentoFinanceiroVO.persist(new MovimentoFinanceiroVO(rf, mv, 2.00, SituacaoMovimento.ABERTO, new Date()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new GlobalException("Erro ao iniciar a aplicação");
 		}
 	}
 }

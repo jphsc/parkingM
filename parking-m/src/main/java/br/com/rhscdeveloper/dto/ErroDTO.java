@@ -2,7 +2,7 @@ package br.com.rhscdeveloper.dto;
 
 public class ErroDTO {
 
-	private Integer codigoErro;
+	private Integer codigo;
 	private String mensagem;
 	
 	public ErroDTO() {
@@ -10,16 +10,16 @@ public class ErroDTO {
 	}
 
 	public ErroDTO(Integer codigoErrro, String mensagem) {
-		this.codigoErro = codigoErrro;
+		this.codigo = codigoErrro;
 		this.mensagem = mensagem;
 	}
 
-	public Integer getCodigoErro() {
-		return codigoErro;
+	public Integer getCodigo() {
+		return codigo;
 	}
 
-	public void setCodigoErro(Integer codigoErrro) {
-		this.codigoErro = codigoErrro;
+	public void setCodigo(Integer codigoErrro) {
+		this.codigo = codigoErrro;
 	}
 
 	public String getMensagem() {

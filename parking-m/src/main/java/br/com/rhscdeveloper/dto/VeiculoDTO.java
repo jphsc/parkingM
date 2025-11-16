@@ -15,7 +15,7 @@ public class VeiculoDTO implements Serializable {
 	private String montadora;
 	private Date dtRegistro;
 	private String placa;
-	private String cor;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Date versao;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private Integer pagina;
@@ -24,13 +24,12 @@ public class VeiculoDTO implements Serializable {
 		
 	}
 
-	public VeiculoDTO(Integer id, String modelo, String montadora, Date dtRegistro, String placa, String cor, Date versao) {
+	public VeiculoDTO(Integer id, String modelo, String montadora, Date dtRegistro, String placa, Date versao) {
 		this.id = id;
 		this.modelo = modelo;
 		this.montadora = montadora;
 		this.dtRegistro = dtRegistro;
 		this.placa = placa;
-		this.cor = cor;
 		this.versao = versao;
 	}
 	
@@ -40,7 +39,6 @@ public class VeiculoDTO implements Serializable {
 		this.montadora = build.montadora;
 		this.dtRegistro = build.dtRegistro;
 		this.placa = build.placa;
-		this.cor = build.cor;
 		this.versao = build.versao;
 	}
 
@@ -84,14 +82,6 @@ public class VeiculoDTO implements Serializable {
 		this.placa = placa;
 	}
 
-	public String getCor() {
-		return cor;
-	}
-
-	public void setCor(String cor) {
-		this.cor = cor;
-	}
-
 	public Date getVersao() {
 		return versao;
 	}
@@ -111,7 +101,7 @@ public class VeiculoDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "VeiculoDTO [id=" + id + ", modelo=" + modelo + ", montadora=" + montadora + ", dtRegistro=" + dtRegistro
-				+ ", placa=" + placa + ", cor=" + cor + ", versao=" + versao + ", pagina=" + pagina + "]";
+				+ ", placa=" + placa + ", versao=" + versao + ", pagina=" + pagina + "]";
 	}
 
 	public static class Builder {
@@ -121,7 +111,6 @@ public class VeiculoDTO implements Serializable {
 		private String montadora;
 		private Date dtRegistro;
 		private String placa;
-		private String cor;
 		private Date versao;
 		
 		public VeiculoDTO build() {
@@ -150,11 +139,6 @@ public class VeiculoDTO implements Serializable {
 
 		public Builder setPlaca(String placa) {
 			this.placa = placa;
-			return this;
-		}
-
-		public Builder setCor(String cor) {
-			this.cor = cor;
 			return this;
 		}
 

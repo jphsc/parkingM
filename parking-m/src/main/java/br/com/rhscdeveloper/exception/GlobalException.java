@@ -19,6 +19,7 @@ public class GlobalException extends RuntimeException {
 		this.mensagem = mensagem;
 	}
 
+
     public Integer getCodigoErro() {
         return codErro;
     }

@@ -10,6 +10,9 @@ import java.util.Objects;
 import org.hibernate.annotations.DynamicUpdate;
 
 import br.com.rhscdeveloper.dto.RegraFinanceiraDTO;
+import br.com.rhscdeveloper.enumerator.Enums.Situacao;
+import br.com.rhscdeveloper.enumerator.Enums.TipoCobranca;
+import br.com.rhscdeveloper.enumerator.Enums.TipoMovimento;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.persistence.Column;
@@ -23,7 +26,7 @@ import jakarta.persistence.Version;
 @Entity
 @DynamicUpdate
 @Table(name = "tb_regra_financeira")
-public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable {
+public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable, Comparable<RegraFinanceiraVO> {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -61,29 +64,41 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		
 	}
 
-	public RegraFinanceiraVO(String descricao, Double valor, Integer tipoCobranca, Integer tipoMovimento,
-			Date dtHrInicioValidade, Date dtHrFimValidade, Integer situacao, Date versao) {
+	public RegraFinanceiraVO(String descricao, Double valor, TipoCobranca tipoCobranca, TipoMovimento tipoMovimento,
+			Date dtHrInicioValidade, Date dtHrFimValidade, Situacao situacao, Date versao) {
 		this.descricao = descricao;
 		this.valor = valor;
-		this.tipoCobranca = tipoCobranca;
-		this.tipoMovimento = tipoMovimento;
+		this.tipoCobranca = tipoCobranca.getId();
+		this.tipoMovimento = tipoMovimento.getId();
 		this.dtHrInicioValidade = dtHrInicioValidade;
 		this.dtHrFimValidade = dtHrFimValidade;
-		this.situacao = situacao;
+		this.situacao = situacao.getId();
 		this.versao = versao;
 	}
 
-	public RegraFinanceiraVO(Integer id, String descricao, Double valor, Integer tipoCobranca, Integer tipoMovimento,
-			Date dtHrInicioValidade, Date dtHrFimValidade, Integer situacao, Date versao) {
+	public RegraFinanceiraVO(Integer id, String descricao, Double valor, TipoCobranca tipoCobranca, TipoMovimento tipoMovimento,
+			Date dtHrInicioValidade, Date dtHrFimValidade, Situacao situacao, Date versao) {
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
-		this.tipoCobranca = tipoCobranca;
-		this.tipoMovimento = tipoMovimento;
+		this.tipoCobranca = tipoCobranca.getId();
+		this.tipoMovimento = tipoMovimento.getId();
 		this.dtHrInicioValidade = dtHrInicioValidade;
 		this.dtHrFimValidade = dtHrFimValidade;
-		this.situacao = situacao;
+		this.situacao = situacao.getId();
 		this.versao = versao;
+	}
+
+	public RegraFinanceiraVO(Builder b) {
+		this.id = b.id;
+		this.descricao = b.descricao;
+		this.valor = b.valor;
+		this.tipoCobranca = b.tipoCobranca;
+		this.tipoMovimento = b.tipoMovimento;
+		this.dtHrInicioValidade = b.dtHrInicioValidade;
+		this.dtHrFimValidade = b.dtHrFimValidade;
+		this.situacao = b.situacao;
+		this.versao = b.versao;
 	}
 
 	public Integer getId() {
@@ -114,16 +129,16 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		return tipoCobranca;
 	}
 
-	public void setTipoCobranca(Integer tipoCobranca) {
-		this.tipoCobranca = tipoCobranca;
+	public void setTipoCobranca(TipoCobranca tipoCobranca) {
+		this.tipoCobranca = tipoCobranca.getId();
 	}
 
 	public Integer getTipoMovimento() {
 		return tipoMovimento;
 	}
 
-	public void setTipoMovimento(Integer tipoMovimento) {
-		this.tipoMovimento = tipoMovimento;
+	public void setTipoMovimento(TipoMovimento tipoMovimento) {
+		this.tipoMovimento = tipoMovimento.getId();
 	}
 
 	public Date getDtHrInicioValidade() {
@@ -146,8 +161,8 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		return situacao;
 	}
 
-	public void setSituacao(Integer situacao) {
-		this.situacao = situacao;
+	public void setSituacao(Situacao situacao) {
+		this.situacao = situacao.getId();
 	}
 
 	public Date getVersao() {
@@ -182,6 +197,72 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 				+ ", dtHrFimValidade=" + dtHrFimValidade + ", situacao=" + situacao + ", versao=" + versao + "]";
 	}
 
+	@Override
+	public int compareTo(RegraFinanceiraVO o) {
+		return this.getId().compareTo(o.getId());
+	}
+	
+	public static class Builder {
+		private Integer id;
+		private String descricao;
+		private Double valor;
+		private Integer tipoCobranca;
+		private Integer tipoMovimento;
+		private Date dtHrInicioValidade;
+		private Date dtHrFimValidade;
+		private Integer situacao;
+		private Date versao;
+		
+		public RegraFinanceiraVO build() {
+			return new RegraFinanceiraVO(this);
+		}
+
+		public Builder setId(Integer id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder setDescricao(String descricao) {
+			this.descricao = descricao;
+			return this;
+		}
+
+		public Builder setValor(Double valor) {
+			this.valor = valor;
+			return this;
+		}
+
+		public Builder setTipoCobranca(Integer tipoCobranca) {
+			this.tipoCobranca = tipoCobranca;
+			return this;
+		}
+
+		public Builder setTipoMovimento(Integer tipoMovimento) {
+			this.tipoMovimento = tipoMovimento;
+			return this;
+		}
+
+		public Builder setDtHrInicioValidade(Date dtHrInicioValidade) {
+			this.dtHrInicioValidade = dtHrInicioValidade;
+			return this;
+		}
+
+		public Builder setDtHrFimValidade(Date dtHrFimValidade) {
+			this.dtHrFimValidade = dtHrFimValidade;
+			return this;
+		}
+
+		public Builder setSituacao(Integer situacao) {
+			this.situacao = situacao;
+			return this;
+		}
+
+		public Builder setVersao(Date versao) {
+			this.versao = versao;
+			return this;
+		}
+	}
+
 	public static RegraFinanceiraVO dtoToVo(RegraFinanceiraVO voPersistente, RegraFinanceiraDTO dto) {
 		voPersistente.id = dto.getId();
 		voPersistente.descricao = dto.getDescricao();
@@ -191,7 +272,7 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		voPersistente.dtHrInicioValidade = dto.getDtHrInicioValidade();
 		voPersistente.dtHrFimValidade = dto.getDtHrFimValidade();
 		voPersistente.situacao = dto.getSituacao();
-		voPersistente.versao = dto.getVersao();
+		voPersistente.versao = Objects.isNull(dto.getVersao()) ? new Date() : dto.getVersao();
 		
 		return voPersistente;
 	}
@@ -225,7 +306,7 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 			parametros.put("tipoMovimento", filtro.getTipoMovimento());
 		}
 		
-		if(filtro.getDtHrFimValidade() != null && filtro.getDtHrFimValidade() == null) {
+		if(filtro.getDtHrFimValidade() != null && filtro.getDtHrFimValidade() == null && Objects.isNull(filtro.getDtHrFimValidade())) {
 			sb.append(" and dtHrFimValidade =: dtHrFimValidade");
 			parametros.put("dtHrFimValidade", filtro.getDtHrFimValidade());
 		}

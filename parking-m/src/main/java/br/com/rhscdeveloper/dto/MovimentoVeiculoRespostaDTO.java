@@ -4,34 +4,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.rhscdeveloper.enumerator.Enums.TipoOperacao;
-import br.com.rhscdeveloper.model.RegraFinanceiraVO;
+import br.com.rhscdeveloper.model.MovimentoVeiculoVO;
 import br.com.rhscdeveloper.util.MensagemResposta;
 
-public class RegraFinanceiraRespostaDTO {
+public class MovimentoVeiculoRespostaDTO {
 
-	private List<RegraFinanceiraDTO> registros;
+	private List<MovimentoVeiculoDTO> registros;
 	private String mensagem;
 	private Long quantidade;
 	private Integer pagina;
 	
-	public static RegraFinanceiraRespostaDTO newInstance(List<RegraFinanceiraVO> registrosPersistentes, TipoOperacao tipoOperacao) {
+	public static MovimentoVeiculoRespostaDTO newInstance(List<MovimentoVeiculoVO> registrosPersistentes, TipoOperacao tipoOperacao) {
 		
-		List<RegraFinanceiraDTO> registros = new ArrayList<RegraFinanceiraDTO>();
-		RegraFinanceiraRespostaDTO resposta = new RegraFinanceiraRespostaDTO();
+		List<MovimentoVeiculoDTO> registros = new ArrayList<MovimentoVeiculoDTO>();
+		MovimentoVeiculoRespostaDTO resposta = new MovimentoVeiculoRespostaDTO();
 		String mensagem = registrosPersistentes.isEmpty() && !tipoOperacao.equals(TipoOperacao.EXCLUIR)
 				? "Não foram encontrados registros" 
-				: new MensagemResposta().gerarMensagem(tipoOperacao, RegraFinanceiraVO.class);
+				: new MensagemResposta().gerarMensagem(tipoOperacao, MovimentoVeiculoVO.class);
 		
 		registrosPersistentes.stream().map(
-			vo -> new RegraFinanceiraDTO.Builder()
-			.setDtHrFimValidade(vo.getDtHrFimValidade())
-			.setDescricao(vo.getDescricao())
-			.setDtHrInicioValidade(vo.getDtHrInicioValidade())
-			.setId(vo.getId()).setSituacao(vo.getSituacao())
-			.setTipoCobranca(vo.getTipoCobranca())
+			vo -> new MovimentoVeiculoDTO.Builder()
+			.setDtHrEntrada(vo.getDtHrEntrada())
+			.setDtHrSaida(vo.getDtHrSaida())
+			.setId(vo.getId())
+			.setIdVeiculo(vo.getVeiculo().getId())
+			.setIdRegra(vo.getMovFinanceiro() == null ? null : vo.getMovFinanceiro().getRegra().getId()) // TODO setar o id da regra financeira
+			.setSituacao(vo.getSituacao())
 			.setTipoMovimento(vo.getTipoMovimento())
-			.setValor(vo.getValor())
-			.setVersao(vo.getVersao()).build()
+			.setVersao(vo.getVersao())
+			.build()
 		).forEach(registros::add);
 		
 		resposta.setRegistros(registros);
@@ -42,11 +43,11 @@ public class RegraFinanceiraRespostaDTO {
 		return resposta;
 	}
 
-	public List<RegraFinanceiraDTO> getRegistros() {
+	public List<MovimentoVeiculoDTO> getRegistros() {
 		return registros;
 	}
 
-	public void setRegistros(List<RegraFinanceiraDTO> registros) {
+	public void setRegistros(List<MovimentoVeiculoDTO> registros) {
 		this.registros = registros;
 	}
 

@@ -3,6 +3,8 @@ package br.com.rhscdeveloper.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class RegraFinanceiraDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -15,6 +17,7 @@ public class RegraFinanceiraDTO implements Serializable {
 	private Date dtHrInicioValidade;
 	private Date dtHrFimValidade;
 	private Integer situacao;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private Date versao;	
 	
 	public RegraFinanceiraDTO() {
