@@ -132,12 +132,17 @@ public class MovimentoVeiculoService {
 			
 			MovimentoVeiculoRespostaDTO resposta = MovimentoVeiculoRespostaDTO.newInstance(Arrays.asList(movVeiculo), TipoOperacao.EDITAR);
 			return resposta;
-		} catch(NullPointerException e) {
+		} catch(IllegalArgumentException e) {
+			LOG.warn(e.getMessage());
+			throw new GlobalException(ConstantesSistema.COD_ERRO_VALIDACAO, "É necessário informar o identificador do movimento!");
+			
+		}  catch(NullPointerException e) {
 			LOG.warn(e.getMessage());
 			throw new GlobalException(ConstantesSistema.COD_ERRO_VALIDACAO, e.getMessage());
 			
 		} catch (Exception e) {
-			LOG.error(e.getStackTrace());
+			LOG.error(e.getMessage());
+			e.printStackTrace();
 			ErroDTO erro = GeracaoException.mensagemExceptionGenerica(e);
 			throw new GlobalException(erro.getCodigo(), erro.getMensagem());
 		}
