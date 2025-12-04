@@ -1,0 +1,31 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#lista {
+  list-style-type: none;
+  font-size: 16px;
+
+  && li {
+    padding: 20px 0 20px 15px;
+    transition: all .5s;
+  }
+
+  && li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 19.5px;
+    padding: 16px 0 16px 8px;
+    border-radius: 25px;
+  }
+}
+
+.rota-ativa {
+  background-color: #f0f0f0;
+  cursor: pointer;
+  padding: 16px 0 16px 8px;
+  border-radius: 25px;
+  font-style: oblique;
+}

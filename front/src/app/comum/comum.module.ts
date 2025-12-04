@@ -2,23 +2,22 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CardLateralComponent } from './card-lateral/card-lateral.component';
-import { CardPrincipalComponent } from './card-principal/card-principal.component';
 import { CardCabecalhoComponent } from './card-cabecalho/card-cabecalho.component';
+import { AppRoutingModule } from '../app-routing.module';
 
 
 @NgModule({
   declarations: [
     CardLateralComponent,
-    CardPrincipalComponent,
     CardCabecalhoComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    AppRoutingModule
   ],
   exports: [
     CardCabecalhoComponent,
-    CardLateralComponent,
-    CardPrincipalComponent
+    CardLateralComponent
   ]
 })
 export class ComumModule { }

@@ -1,5 +1,12 @@
-<app-card-cabecalho></app-card-cabecalho>
-<app-card-lateral></app-card-lateral>
-<router-outlet>
-  <!-- <app-card-principal></app-card-principal> -->
-</router-outlet>
+<div id="container">
+
+  <div id="container-esquerdo">
+   <app-card-lateral></app-card-lateral>
+  </div>
+
+  <div id="container-direito">
+    <app-card-cabecalho></app-card-cabecalho>
+    <router-outlet></router-outlet>
+  </div>
+
+</div>
