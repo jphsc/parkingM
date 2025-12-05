@@ -5,19 +5,14 @@
   width: 80%;
   margin: auto;
   background-color: linear-gradient(90deg, #df3f3f 0%, #ffffff 100%);
-
-  /* height: 90%;
-  width: 90%;
-  min-height: 600px;
-  box-sizing: border-box; */
 }
 
 #container-esquerdo {
-  /* border: 1px solid #000; */
+  border: 1px solid #000;
   width: 22%;
 }
 
 #container-direito {
-  /* border: 1px solid #000; */
+  border: 1px solid #000;
   width: 78%;
 }

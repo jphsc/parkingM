@@ -9,7 +9,8 @@ const routes: Routes = [
   {path: 'veiculo', loadChildren: () => import('./paginas/veiculo/veiculo.module').then(m => m.VeiculoModule)},
   {path: 'movimento', loadChildren: () => import('./paginas/mov-veiculo/mov-veiculo.module').then(m => m.MovVeiculoModule)},
   {path: 'regra', loadChildren: () => import('./paginas/regra-financeira/regra-financeira.module').then(m => m.RegrafFinanceiraModule)},
-  {path: '**', component: NaoEncontradaComponent}
+  {path: '**', redirectTo: 'pagina-nao-encontrada'},
+  {path: 'pagina-nao-encontrada', component: NaoEncontradaComponent}
 ];
 
 @NgModule({

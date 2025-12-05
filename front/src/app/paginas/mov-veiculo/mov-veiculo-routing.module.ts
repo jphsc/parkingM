@@ -11,7 +11,8 @@ const routes: Routes = [
   {path: 'cadastrar', component: MovveiculoFormComponent},
   {path: 'editar/:id', component: MovveiculoFormComponent},
   {path: 'detalhe/:id', component: MovveiculoDetalheComponent},
-  {path: '**', component: NaoEncontradaComponent}
+  {path: '**', redirectTo: '/pagina-nao-encontrada'},
+  {path: 'pagina-nao-encontrada', component: NaoEncontradaComponent}
 ];
 
 @NgModule({

@@ -11,7 +11,8 @@ const routes: Routes = [
   {path: 'cadastrar', component: RegraFormComponent},
   {path: 'editar/:id', component: RegraFormComponent},
   {path: 'detalhe/:id', component: RegraDetalheComponent},
-  {path: '**', component: NaoEncontradaComponent}
+  {path: '**', redirectTo: '/pagina-nao-encontrada'},
+  {path: 'pagina-nao-encontrada', component: NaoEncontradaComponent}
 ];
 
 @NgModule({
