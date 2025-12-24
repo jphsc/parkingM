@@ -12,6 +12,7 @@ public class MovimentoVeiculoDTO implements Serializable {
 	private Integer id;
 	private Integer idVeiculo;
 	private Integer idRegra;
+	private String placa;
 	private Integer tipoMovimento;
 	private Date dtHrEntrada;
 	private Date dtHrSaida;
@@ -23,11 +24,12 @@ public class MovimentoVeiculoDTO implements Serializable {
     	
     }
 
-	public MovimentoVeiculoDTO(Integer id, Integer idVeiculo, Integer idRegra, Integer tipoMovimento, Date dtHrEntrada, Date dtHrSaida,
-			Integer situacao, Date versao) {
+	public MovimentoVeiculoDTO(Integer id, Integer idVeiculo, Integer idRegra, String placa, Integer tipoMovimento, Date dtHrEntrada, 
+			Date dtHrSaida, Integer situacao, Date versao) {
 		this.id = id;
 		this.idVeiculo = idVeiculo;
 		this.idRegra = idRegra;
+		this.placa = placa;
 		this.tipoMovimento = tipoMovimento;
 		this.dtHrEntrada = dtHrEntrada;
 		this.dtHrSaida = dtHrSaida;
@@ -39,6 +41,7 @@ public class MovimentoVeiculoDTO implements Serializable {
 		this.id = b.id;
 		this.idVeiculo = b.idVeiculo;
 		this.idRegra = b.idRegra;
+		this.placa = b.placa;
 		this.tipoMovimento = b.tipoMovimento;
 		this.dtHrEntrada = b.dtHrEntrada;
 		this.dtHrSaida = b.dtHrSaida;
@@ -68,6 +71,14 @@ public class MovimentoVeiculoDTO implements Serializable {
 
 	public void setIdRegra(Integer idRegra) {
 		this.idRegra = idRegra;
+	}
+
+	public String getPlaca() {
+		return placa;
+	}
+
+	public void setPlaca(String placa) {
+		this.placa = placa;
 	}
 
 	public Integer getTipoMovimento() {
@@ -115,6 +126,7 @@ public class MovimentoVeiculoDTO implements Serializable {
 		private Integer id;
 		private Integer idVeiculo;
 		private Integer idRegra;
+		private String placa;
 		private Integer tipoMovimento;
 		private Date dtHrEntrada;
 		private Date dtHrSaida;
@@ -137,6 +149,11 @@ public class MovimentoVeiculoDTO implements Serializable {
 
 		public Builder setIdRegra(Integer idRegra) {
 			this.idRegra = idRegra;
+			return this;
+		}
+
+		public Builder setPlaca(String placa) {
+			this.placa = placa;
 			return this;
 		}
 

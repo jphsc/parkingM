@@ -12,7 +12,7 @@ import br.com.rhscdeveloper.util.MensagemResposta;
 
 public class VeiculoRespostaDTO {
 
-	private List<VeiculoDTO> veiculos;
+	private List<VeiculoDTO> registros;
 	private String mensagem;
 	private Long quantidade;
 	private Integer pagina;
@@ -22,7 +22,7 @@ public class VeiculoRespostaDTO {
 		List<VeiculoDTO> registros = new ArrayList<VeiculoDTO>();
 		VeiculoRespostaDTO resposta = new VeiculoRespostaDTO();
 		String mensagem = registrosPersistentes.isEmpty() && !tipoOperacao.equals(TipoOperacao.EXCLUIR)
-				? "Não foram encontrados veiculos" 
+				? "Não foram encontrados registros" 
 				: new MensagemResposta().gerarMensagem(tipoOperacao, VeiculoVO.class);
 		
 		registrosPersistentes.stream().map(
@@ -35,7 +35,7 @@ public class VeiculoRespostaDTO {
 				.setVersao(vo.getVersao()).build()
 		).forEach(registros::add);
 		
-		resposta.setVeiculos(registros);
+		resposta.setRegistros(registros);
 		resposta.setQuantidade(Long.valueOf(registros.size()));
 		resposta.setPagina(1); // TODO Paginacao
 		resposta.setMensagem(mensagem);
@@ -49,12 +49,12 @@ public class VeiculoRespostaDTO {
 		return resposta;
 	}
 
-	public List<VeiculoDTO> getVeiculos() {
-		return veiculos;
+	public List<VeiculoDTO> getRegistros() {
+		return registros;
 	}
 
-	public void setVeiculos(List<VeiculoDTO> registros) {
-		this.veiculos = registros;
+	public void setRegistros(List<VeiculoDTO> registros) {
+		this.registros = registros;
 	}
 
 	public String getMensagem() {

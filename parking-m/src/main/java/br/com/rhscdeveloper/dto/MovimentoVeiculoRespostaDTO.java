@@ -31,6 +31,7 @@ public class MovimentoVeiculoRespostaDTO {
 			.setIdRegra(vo.getMovFinanceiro() == null ? null : vo.getMovFinanceiro().getRegra().getId()) // TODO setar o id da regra financeira
 			.setSituacao(vo.getSituacao())
 			.setTipoMovimento(vo.getTipoMovimento())
+			.setPlaca(vo.getVeiculo().getPlaca())
 			.setVersao(vo.getVersao())
 			.build()
 		).forEach(registros::add);

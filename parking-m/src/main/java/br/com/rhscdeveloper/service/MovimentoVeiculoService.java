@@ -119,6 +119,27 @@ public class MovimentoVeiculoService {
 		}
 	}
 	
+	public MovimentoVeiculoRespostaDTO obterMovsVeiculoAbertos(MovimentoVeiculoDTO dto) {
+		try {
+//			Thread.sleep(4000);
+			
+			List<MovimentoVeiculoVO> movsVeiculo = MovimentoVeiculoVO.findAll(dto);
+			MovimentoVeiculoRespostaDTO resposta = MovimentoVeiculoRespostaDTO.newInstance(movsVeiculo, TipoOperacao.CONSULTAR);
+			
+			obterSetarRegraFinanceiraMovVeiculo(movsVeiculo, resposta);
+			
+			return resposta;
+		} catch (NullPointerException e) {
+			LOG.warn(e.getMessage());
+			throw new GlobalException(ConstantesSistema.COD_ERRO_INEXISTENTE, ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);
+			
+		} catch (Exception e) {
+			LOG.error(e.getStackTrace());
+			ErroDTO erro = GeracaoException.mensagemExceptionGenerica(e);
+			throw new GlobalException(erro.getCodigo(), erro.getMensagem());
+		}
+	}
+	
 	public MovimentoVeiculoRespostaDTO encerrarMovVeiculo(MovimentoVeiculoDTO dto) {
 		
 		try {

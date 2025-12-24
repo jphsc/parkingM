@@ -4,9 +4,10 @@
   box-sizing: border-box;
 }
 
+
 #lista {
   list-style-type: none;
-  font-size: 16px;
+  font-size: 15px;
 
   && li {
     padding: 20px 0 20px 15px;
@@ -16,9 +17,9 @@
   && li:hover {
     background-color: #f0f0f0;
     cursor: pointer;
-    font-size: 19.5px;
+    font-size: 18px;
     padding: 16px 0 16px 8px;
-    border-radius: 25px;
+    border-radius: 12px;
   }
 }
 
@@ -26,6 +27,6 @@
   background-color: #f0f0f0;
   cursor: pointer;
   padding: 16px 0 16px 8px;
-  border-radius: 25px;
+  border-radius: 12px;
   font-style: oblique;
 }

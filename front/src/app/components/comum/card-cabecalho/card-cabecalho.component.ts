@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./card-cabecalho.component.css']
 })
 export class CardCabecalhoComponent {
-  @Input() titulo: string = "Título Padrão";
+  @Input() titulo: string = "";
 }

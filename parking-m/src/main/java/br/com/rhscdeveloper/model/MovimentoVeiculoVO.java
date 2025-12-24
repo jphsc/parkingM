@@ -2,13 +2,18 @@ package br.com.rhscdeveloper.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import br.com.rhscdeveloper.dto.MovimentoVeiculoDTO;
 import br.com.rhscdeveloper.enumerator.Enums.SituacaoMovimento;
 import br.com.rhscdeveloper.enumerator.Enums.TipoMovimento;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -215,5 +220,30 @@ public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializabl
 		MovimentoFinanceiroVO mf = MovimentoFinanceiroVO.find("idMovimento = ?1", this).firstResult();
 		this.movFinanceiro = mf;
 		return this.movFinanceiro;
+	}
+	
+	public static List<MovimentoVeiculoVO> findAll(MovimentoVeiculoDTO dto){
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		StringBuilder sb = new StringBuilder(" from MovimentoVeiculoVO mv where true");
+
+		if(dto.getDtHrEntrada() != null) {
+			sb.append(" and dtHrEntrada =: dtHrEntrada");
+			params.put("dtHrEntrada", dto.getDtHrEntrada());
+		}
+		
+		if(dto.getSituacao() != null && dto.getSituacao() != 0) {
+			sb.append(" and situacao =: situacao");
+			params.put("situacao", dto.getSituacao());
+		}
+		
+		if(dto.getPlaca() != null && !dto.getPlaca().equals("")) {
+			sb.append(" and mv.veiculo.placa =: placa");
+			params.put("placa", dto.getPlaca());
+		}
+		
+		PanacheQuery<MovimentoVeiculoVO> query = find(sb.toString(), params);
+		
+		return query.list();
 	}
 }
