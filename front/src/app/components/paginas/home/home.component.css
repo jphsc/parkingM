@@ -1,7 +1,6 @@
 .div-mov-avulso {
   display: flex;
   flex-direction: column;
-  /* margin-bottom: 20px; */
   padding: 20px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -28,11 +27,12 @@
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.btn-mov-avulso:hover, .btn-acao:hover {
+.btn-outline-primary:hover, .btn-acao:hover {
   background-color: #2980b9;
+  color: black;
 }
 
 .div-movs-aberto{

@@ -7,6 +7,11 @@ export interface Enumerador{
   [key: string]: ItemEnum;
 }
 
+export enum AcaoForm {
+  EDITAR,
+  CADASTRAR
+}
+
 export abstract class Enumeradores {
 
   public static factory<T extends keyof typeof Enumeradores>(tipo: T) {
@@ -35,6 +40,19 @@ export abstract class Enumeradores {
     SIM: { id: 1, descricao: 'Sim' }
   };
 
+  public static readonly Situacao: Enumerador = {
+    ATIVO :{ id: 2, descricao: 'Ativo' },
+    INATIVO: { id: 3, descricao: 'Inativo' },
+    CADASTRADO: { id: 4, descricao: 'Cadastrado' }
+  };
+
+  public static readonly TipoCobranca: Enumerador = {
+    DINHIEIRO: { id: 5, descricao: 'Dinheiro' },
+    DEBITO: { id: 6, descricao: 'Débito' },
+    CREDITO: { id: 7, descricao: 'Crédito' },
+    INDIFERENTE: { id: 8, descricao: 'Indiferente' }
+  };
+
   public static readonly TipoMovVeiculo: Enumerador = {
     HORA: { id: 18, descricao: 'Por Hora' },
     DIA: { id: 8, descricao: 'Diário' },
@@ -47,13 +65,20 @@ export abstract class Enumeradores {
     ABERTO: { id: 12, descricao: 'Aberto' },
     ENCERRADO: { id: 13, descricao: 'Encerrado'}
   };
+
+  public static readonly TipoRequest: Enumerador = {
+    CONSULTAR: { id: 14, descricao: 'Consultar' },
+    CADASTRAR: { id: 15, descricao: 'Cadastrar' },
+    EDITAR: { id: 16, descricao: 'Editar' },
+    EXCLUIR: { id: 17, descricao: 'Excluir' }
+  };
 }
 
-export abstract class Utils {
-  public static formatarPlaca(placa: string): string {
+// export abstract class Utils {
+//   public static formatarPlaca(placa: string): string {
 
-    let x = placa.toUpperCase().replaceAll(/[^a-zA-Z0-9]/g, '');
-    console.log(x);
-    return x;
-  }
-}
+//     let x = placa.toUpperCase().replaceAll(/[^a-zA-Z0-9]/g, '');
+//     console.log(x);
+//     return x;
+//   }
+// }

@@ -138,10 +138,10 @@ public class Enums {
 	
 	public enum TipoOperacao {
 		
-		CONSULTAR(14, "Ler"),
-		CADASTRAR(15, "Persistir"),
-		EDITAR(16, "Atualizar"),
-		EXCLUIR(17, "Deletar");
+		CONSULTAR(14, "Consultar"),
+		CADASTRAR(15, "Cadastrar"),
+		EDITAR(16, "Editar"),
+		EXCLUIR(17, "Excluir");
 		
 		private Integer id;
 		private String descricao;

@@ -35,6 +35,7 @@ export class MovimentoVeiculoService {
             situacao: mvv.situacao,
             versao: mvv.versao
         };
+
         return mv;
       })
     )

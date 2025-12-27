@@ -27,7 +27,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ComumModule,
     MovVeiculoModule,
     RegrafFinanceiraModule,
-    VeiculoModule
+    VeiculoModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true}

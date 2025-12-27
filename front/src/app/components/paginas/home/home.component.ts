@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
-import { Enumeradores, Utils } from 'src/app/utils/helper';
+import { Enumeradores } from 'src/app/utils/helper';
+import { Utils } from 'src/app/utils/util';
 
 @Component({
   selector: 'app-home',
@@ -18,17 +19,15 @@ export class HomeComponent implements OnInit {
   isLoading$: Observable<boolean>;
   loadingMessage$: Observable<string>;
   loaded: boolean = false;
+  placaForm = new FormGroup({ placaInput: new FormControl('', [Validators.required, Validators.minLength(7)]) });
 
-  constructor(private mvs: MovimentoVeiculoService, private loadingService: LoadingService
-    , private rota: RouterOutlet
-  ) {
+  constructor(private mvs: MovimentoVeiculoService, private loadingService: LoadingService) {
     this.isLoading$ = this.loadingService.isLoading$;
     this.loadingMessage$ = this.loadingService.loadingMessage$;
   }
 
   ngOnInit(): void {
     this.mvs.getMovimentosAbertos().subscribe(movvs => {
-
       movvs.forEach(mv => {
         const tipoMov:string = Enumeradores.factory('TipoMovVeiculo').getDescricao(mv.tipoMovimento);
         const situacaoMov:string = Enumeradores.factory('SituacaoMovimento').getDescricao(mv.situacao);
@@ -39,28 +38,24 @@ export class HomeComponent implements OnInit {
           this.movAbertos.push(mv);
       })
       this.loaded = true;
-      console.log(this.movAbertos)
+    });
+
+    this.placaForm.get("placaInput")?.valueChanges.subscribe(value => {
+      if(!value) return;
+
+      this.formatarPlaca(value);
+
+      // this.placaForm.get("placaInput")?.disable()
     })
   }
 
   protected gerarMovimentoAvulso(): void {
 
-    if (!this.placa || this.placa.trim() === '') {
-      alert('Por favor, informe uma placa válida.');
-      return;
-    }
-
-    console.log(this.placa);
+    console.log(this.placaForm.value);
   }
 
-  public formatarPlaca():void {
-
-    let placaFormatada = this.formatarPlacaInput(this.placa);
-    this.placa = placaFormatada.length <= 7 ? placaFormatada : placaFormatada.substring(0,7);
-    console.log(this.placa);
-  }
-
-  public formatarPlacaInput(placa: string): string {
-    return placa.toUpperCase().replaceAll(/[^a-zA-Z0-9]/g, '');
+  public formatarPlaca(placa: string): void {
+    const placaFormatada = Utils.formatarPlaca(placa);
+    this.placaForm.get("placaInput")?.setValue(placaFormatada, { emitEvent: false });
   }
 }

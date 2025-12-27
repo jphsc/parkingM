@@ -42,7 +42,7 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable, Compar
 	@Column(name = "vei_montadora", nullable = false)
 	private String montadora;
 	
-	@Column(name = "ve_dt_registro", nullable = false)
+	@Column(name = "vei_dt_registro", nullable = false)
 	private Date dtRegistro;
 	
 	@Column(name = "vei_placa", nullable = false, unique = true, length = 7)

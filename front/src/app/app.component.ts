@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements AfterContentChecked, AfterContentInit {
+export class AppComponent implements AfterContentChecked {
 
   protected tituloPagina: string = "";
   protected mostrarCabecalho = true;
@@ -15,16 +15,12 @@ export class AppComponent implements AfterContentChecked, AfterContentInit {
 
   constructor(private rota: Router, private titleService: Title) { }
 
-  ngAfterContentInit(): void {
-    console.log(this.rota)
-  }
-
-
   ngAfterContentChecked(): void {
     const url = this.rota.url;
     this.tituloPagina = this.getTituloPagina(url);
     this.mostrarCabecalho = !(url == '/pagina-nao-encontrada');
-    this.titleService.setTitle(this.mostrarCabecalho ? `ParkingM - ${this.tituloPagina}` : 'ParkingM - Página não encontrada');
+    // this.titleService.setTitle(this.mostrarCabecalho ? `ParkingM - ${this.tituloPagina}` : 'ParkingM - Página não encontrada');
+    this.titleService.setTitle(this.mostrarCabecalho ? `${this.title} - ${this.tituloPagina}` : `${this.title} - Página não encontrada`);
   }
 
   private getTituloPagina(url: string): string {
