@@ -1,1 +1,25 @@
-<p>movveiculo-listar works!</p>
+<table class="tabela-generica">
+  <thead>
+    <tr>
+      <th>Veículo</th>
+      <th>Tipo de movimento</th>
+      <th>Situação</th>
+      <th>Entrada</th>
+      <th>Saída</th>
+      <th>Ação</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let mv of movimentos">
+    <tr>
+      <td>{{ mv.placa }}</td>
+      <td>{{ mv.tipoMovimento }}</td>
+      <td>{{ mv.situacao }}</td>
+      <td>{{ mv.dtHrEntrada | date:'dd/MM/yyyy HH:mm' }}</td>
+      <td>{{ mv.dtHrSaida | date:'dd/MM/yyyy HH:mm' }}</td>
+      <td>
+        <button class="btn btn-primary btn-acao">Editar</button><br>
+        <button class="btn btn-danger btn-acao" *ngIf="mv.situacao == 'Aberto'">Encerrar</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

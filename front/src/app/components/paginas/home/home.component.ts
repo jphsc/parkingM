@@ -1,5 +1,6 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -21,7 +22,9 @@ export class HomeComponent implements OnInit {
   loaded: boolean = false;
   placaForm = new FormGroup({ placaInput: new FormControl('', [Validators.required, Validators.minLength(7)]) });
 
-  constructor(private mvs: MovimentoVeiculoService, private loadingService: LoadingService) {
+  constructor(private mvs: MovimentoVeiculoService, private loadingService: LoadingService,
+    private rota: Router
+  ) {
     this.isLoading$ = this.loadingService.isLoading$;
     this.loadingMessage$ = this.loadingService.loadingMessage$;
   }
@@ -44,8 +47,6 @@ export class HomeComponent implements OnInit {
       if(!value) return;
 
       this.formatarPlaca(value);
-
-      // this.placaForm.get("placaInput")?.disable()
     })
   }
 
@@ -54,8 +55,12 @@ export class HomeComponent implements OnInit {
     console.log(this.placaForm.value);
   }
 
-  public formatarPlaca(placa: string): void {
-    const placaFormatada = Utils.formatarPlaca(placa);
+  protected detalharMovimento(movId: any): void {
+    this.rota.navigate([`/movimento/detalhe/${movId}`]);
+  }
+
+  public formatarPlaca(value: string): void {
+    const placaFormatada = Utils.formatarPlaca(value);
     this.placaForm.get("placaInput")?.setValue(placaFormatada, { emitEvent: false });
   }
 }

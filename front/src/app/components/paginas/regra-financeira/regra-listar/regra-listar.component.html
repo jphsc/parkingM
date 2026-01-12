@@ -1,1 +1,26 @@
-<p>regra-listar works!</p>
+<table *ngIf="regras" class="tabela-generica">
+  <thead>
+    <tr>
+      <th>Descrição</th>
+      <th>Valor</th>
+      <th>Cobrança</th>
+      <th>Tipo Movimento</th>
+      <th>Válido de</th>
+      <th>Válido até</th>
+      <th>Situação</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let regra of regras">
+      <td>{{ regra.descricao }}</td>
+      <td>{{ regra.valor | currency:'BRL'}}</td>
+      <td>{{ regra.tipoCobranca }}</td>
+      <td>{{ regra.tipoMovimento }}</td>
+      <td>{{ regra.dtHrInicioValidade | date: 'dd/MM/yyyy'}}</td>
+      <td>{{ regra.dtHrFimValidade | date: 'dd/MM/yyyy' }}</td>
+      <td>{{ regra.situacao }}</td>
+      <td><button class="btn btn-primary btn-acao">Editar</button></td>
+    </tr>
+  </tbody>
+</table>

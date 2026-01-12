@@ -14,21 +14,6 @@ export class VeiculoService {
 
   constructor(private http: HttpClient) { }
 
-  // getVeiculos<K extends string>(key?: K):Observable<Veiculo[]> {
-  //   const prop = (key ?? 'veiculos') as K;
-
-  //   return this.http
-  //     .get<RespostaDinamica<Veiculo, K>>(`${this.baseUrlBackend}/veiculos`)
-  //     .pipe(
-  //       map((resp) => {
-  //         // resp é do tipo RespostaDinamica<Veiculo, K>
-  //         // Para acessar de forma segura para o TS, fazemos uma asserção auxiliar:
-  //         const typed = resp as unknown as Record<K, Veiculo[]>;
-  //         return (typed[prop] ?? []) as Veiculo[];
-  //       })
-  //     );
-  // }
-
   getVeiculos():Observable<Veiculo[]> {
     return this.http
       .get<RespostaReqBackend<Veiculo>>(`${this.baseUrlBackend}/veiculos`)

@@ -72,6 +72,7 @@ public class VeiculoService {
 
 	public VeiculoRespostaDTO obterVeiculosFiltro(VeiculoDTO filtro) {
 		try {
+			Thread.sleep(4000);
 			List<VeiculoVO> veiculos = VeiculoVO.findAll(filtro);
 			
 			if(veiculos.isEmpty()) {

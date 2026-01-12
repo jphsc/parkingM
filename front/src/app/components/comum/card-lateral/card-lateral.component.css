@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  min-width: 125px;
 }
 
 
@@ -10,7 +11,7 @@
   font-size: 15px;
 
   && li {
-    padding: 20px 0 20px 15px;
+    padding: 20px;
     transition: all .5s;
   }
 
@@ -18,7 +19,7 @@
     background-color: #f0f0f0;
     cursor: pointer;
     font-size: 18px;
-    padding: 16px 0 16px 8px;
+    padding: 16px 8px 16px 8px;
     border-radius: 12px;
   }
 }

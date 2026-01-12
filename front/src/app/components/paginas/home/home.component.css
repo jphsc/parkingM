@@ -20,7 +20,7 @@
   margin-bottom: 15px;
 }
 
-.btn-mov-avulso, .btn-acao {
+.btn-mov-avulso {
   background-color: #3498db;
   color: white;
   border: none;
@@ -28,11 +28,6 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
-}
-
-.btn-outline-primary:hover, .btn-acao:hover {
-  background-color: #2980b9;
-  color: black;
 }
 
 .div-movs-aberto{
@@ -43,21 +38,4 @@
   border-radius: 8px;
   background-color: #f9f9f9;
   justify-items: center;
-}
-
-.table-movimentos {
-  width: 100%;
-  border-collapse: collapse;
-  margin: auto;
-}
-
-.table-movimentos th,
-.table-movimentos td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-
-.table-movimentos th {
-  background-color: #f2f2f2;
 }
