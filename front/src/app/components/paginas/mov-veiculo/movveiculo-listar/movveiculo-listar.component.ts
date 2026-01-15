@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
 import { Enumeradores } from 'src/app/utils/helper';
@@ -13,7 +13,7 @@ export class MovveiculoListarComponent implements OnInit {
 
   movimentos:MovimentoVeiculo[] = [];
 
-  constructor(private mvs: MovimentoVeiculoService){ }
+  constructor(private mvs: MovimentoVeiculoService, private rota: Router){ }
 
   ngOnInit(): void {
     this.getAllMovimentos();
@@ -33,5 +33,12 @@ export class MovveiculoListarComponent implements OnInit {
     );
   }
 
+  detalharMovimento(id: any) {
+    this.rota.navigate([`/movimento/detalhe/${id}`]);
+  }
+
+  finalizarMovimento(id: any) {
+    this.rota.navigate([`/movimento/finalizar/${id}`]);
+  }
 
 }

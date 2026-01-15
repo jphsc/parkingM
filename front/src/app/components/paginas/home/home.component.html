@@ -29,10 +29,10 @@
           <td>{{ mov.situacao }}</td>
           <td>{{ mov.tipoMovimento }}</td>
           <td>
-            <button class="btn btn-primary btn-acao">Finalizar</button>
+            <button class="btn btn-danger btn-acao" (click)="finalizarMovimento(mov.id)">Finalizar</button>
           </td>
           <td>
-            <button class="btn btn-success btn-acao" (click)="detalharMovimento(mov.id)">Detalhes</button>
+            <button class="btn btn-success btn-acao" (click)="detalharMovimento(mov.id)">Detalhar</button>
           </td>
         </tr>
       </tbody>

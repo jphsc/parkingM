@@ -11,6 +11,7 @@ const routes: Routes = [
   {path: 'cadastrar', component: MovveiculoFormComponent},
   {path: 'editar/:id', component: MovveiculoFormComponent},
   {path: 'detalhe/:id', component: MovveiculoDetalheComponent},
+  {path: 'finalizar/:id', component: MovveiculoDetalheComponent},
   {path: '**', redirectTo: '/pagina-nao-encontrada'},
   {path: 'pagina-nao-encontrada', component: NaoEncontradaComponent}
 ];

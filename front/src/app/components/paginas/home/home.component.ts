@@ -59,6 +59,10 @@ export class HomeComponent implements OnInit {
     this.rota.navigate([`/movimento/detalhe/${movId}`]);
   }
 
+  protected finalizarMovimento(movId: any): void {
+    this.rota.navigate([`/movimento/finalizar/${movId}`]);
+  }
+
   public formatarPlaca(value: string): void {
     const placaFormatada = Utils.formatarPlaca(value);
     this.placaForm.get("placaInput")?.setValue(placaFormatada, { emitEvent: false });

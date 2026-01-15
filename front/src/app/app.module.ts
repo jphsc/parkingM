@@ -14,6 +14,7 @@ import { LoadingInterceptor } from './services/loading.interceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 registerLocaleData(localePt);
 
@@ -32,7 +33,8 @@ registerLocaleData(localePt);
     MovVeiculoModule,
     RegrafFinanceiraModule,
     VeiculoModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},

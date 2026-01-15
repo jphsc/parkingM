@@ -17,8 +17,8 @@
       <td>{{ mv.dtHrEntrada | date:'dd/MM/yyyy HH:mm' }}</td>
       <td>{{ mv.dtHrSaida | date:'dd/MM/yyyy HH:mm' }}</td>
       <td>
-        <button class="btn btn-primary btn-acao">Editar</button><br>
-        <button class="btn btn-danger btn-acao" *ngIf="mv.situacao == 'Aberto'">Encerrar</button>
+        <button class="btn btn-primary btn-acao" (click)="detalharMovimento(mv.id)">Detalhar</button><br>
+        <button class="btn btn-danger btn-acao" (click)="finalizarMovimento(mv.id)" *ngIf="mv.situacao == 'Aberto'">Encerrar</button>
       </td>
     </tr>
   </tbody>

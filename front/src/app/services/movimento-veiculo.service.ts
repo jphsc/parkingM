@@ -33,6 +33,14 @@ export class MovimentoVeiculoService {
       )
   }
 
+  getMovimentoById(id: number):Observable<MovimentoVeiculo> {
+    return this.http
+      .get<RespostaReqBackend<MovimentoVeiculo>>(`${this.baseUrlBackend}/${id}`)
+      .pipe(
+        map(resp => this.mapMovVeiculo(resp.registros[0]))
+      )
+  }
+
   private mapMovVeiculo(mvv: MovimentoVeiculo): MovimentoVeiculo {
     const mv: MovimentoVeiculo = {
       id: mvv.id,

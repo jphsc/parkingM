@@ -58,6 +58,9 @@ export class AppComponent implements AfterContentChecked {
       case '/movimento/detalhe':
         this.title = "Detalhes do movimento do veículo";
         break;
+      case '/movimento/finalizar':
+        this.title = "Finalizar movimento de veículo";
+        break;
       case '/regra/cadastrar':
         this.title = "Cadastrar regra financeira";
         break;
