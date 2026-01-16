@@ -6,7 +6,7 @@ import { VeiculoListarComponent } from './veiculo-listar/veiculo-listar.componen
 import { VeiculoFormComponent } from './veiculo-form/veiculo-form.component';
 import { VeiculoDetalheComponent } from './veiculo-detalhe/veiculo-detalhe.component';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     VeiculoRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSnackBarModule
   ]
 })
 export class VeiculoModule { }

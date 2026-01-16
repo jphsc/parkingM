@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Veiculo } from 'src/app/models/veiculo.model';
+import { ToastService } from 'src/app/services/toast.service';
 import { VeiculoService } from 'src/app/services/veiculo.service';
 import { Utils } from 'src/app/utils/util';
 
@@ -18,7 +19,7 @@ export class VeiculoFormComponent implements OnInit {
     placa: new FormControl<string>('ECR5B01', [Validators.required, Validators.minLength(7)]),
   });
 
-  constructor(private fb: FormBuilder, private vs: VeiculoService) { }
+  constructor(private fb: FormBuilder, private vs: VeiculoService, private ts: ToastService) { }
 
   ngOnInit(): void {
     this.formVeiculo.get("placa")?.valueChanges
@@ -42,12 +43,12 @@ export class VeiculoFormComponent implements OnInit {
     this.vs.createVeiculo(veiculo).subscribe({
       next: (resp) => {
         resp.registros[0];
-        console.log('Veículo criado com sucesso');
-        console.log(resp.registros[0]);
+        this.ts.gerarToast(`Veículo criado com a placa: ${resp.registros[0].placa}`, true);
+        this.formVeiculo.reset();
       },
       error: (err) => {
-        alert(err.error.mensagem);
-        console.error('Erro ao criar veículo:', err);
+        console.error(err.error.mensagem);
+        this.ts.gerarToast(err.error.mensagem, false);
       }
     });
   }

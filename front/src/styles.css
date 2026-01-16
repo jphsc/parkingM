@@ -1,4 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+body {
+  margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .botao {
   border: 1px solid #000;
@@ -6,15 +12,6 @@
   padding: 10px;
   margin: auto;
   transition: all 0.5s;
-}
-
-.botao:hover {
-  /* font-size: 1.2em;
-  font-weight: bolder;
-  background-color: rgb(241, 250, 250);
-  cursor: pointer; */
-  /* background-color: #2980b9;
-  color: black; */
 }
 
 .tabela-generica {
@@ -35,7 +32,6 @@
 }
 
 .btn-acao {
-  /* background-color: #3498db; */
   color: white;
   border: none;
   padding: 8px 16px;
@@ -44,11 +40,18 @@
   transition: background-color 0.3s, color 0.3s;
 }
 
-
 .btn-acao:hover {
-  /* background-color: #2980b9; */
   color: black;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.toast-sucesso {
+  --mdc-snackbar-container-color: #2e7d32;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #000000;
+}
+
+.toast-erro {
+  --mdc-snackbar-container-color: #d32f2f;
+  --mdc-snackbar-supporting-text-color: #ffffff;
+  --mat-snack-bar-button-color: #000000;
+}
