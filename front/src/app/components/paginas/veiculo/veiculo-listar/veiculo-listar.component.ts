@@ -22,19 +22,14 @@ export class VeiculoListarComponent implements OnInit {
   private carregarVeiculos():void {
     this.veiculoService
       .getVeiculos()
-      .subscribe(vs => this.veiculos$ = vs);
+      .subscribe({
+        next: (resp: RespostaReqBackend<Veiculo>) => {
+          this.veiculos$ = resp.registros;
+        },
+        error: (err) => {
+          console.error('Erro ao carregar veículos:', err);
+        }
+      }
+    );
   }
-
-  // protected veiculos$!:Observable<Veiculo[]>;
-
-  // constructor(private veiculoService: VeiculoService){}
-
-  // ngOnInit(): void {
-  //   this.carregarVeiculos();
-  // }
-
-  // private carregarVeiculos():void {
-  //   this.veiculos$ = this.veiculoService
-  //     .getVeiculos()
-  // }
 }

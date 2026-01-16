@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
+import { RespostaReqBackend } from 'src/app/models/resposta.model';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
 import { Enumeradores } from 'src/app/utils/helper';
 
@@ -19,18 +20,24 @@ export class MovveiculoListarComponent implements OnInit {
     this.getAllMovimentos();
   }
 
-  private getAllMovimentos():void {
-    this.mvs.getAllMovimentos().subscribe(resp =>
-      this.movimentos = resp.map(mv => {
-        let tipoMovimento = Enumeradores.factory('TipoMovVeiculo').getDescricao(mv.tipoMovimento);
-        let situacao = Enumeradores.factory('SituacaoMovimento').getDescricao(mv.situacao);
+  private async getAllMovimentos():Promise<void> {
+    this.mvs.getAllMovimentos().subscribe({
+        next: (resp: RespostaReqBackend<MovimentoVeiculo>) => {
+          resp.registros.forEach(mv => {
+            let tipoMovimento = Enumeradores.factory('TipoMovVeiculo').getDescricao(mv.tipoMovimento);
+            let situacao = Enumeradores.factory('SituacaoMovimento').getDescricao(mv.situacao);
 
-        mv.tipoMovimento = tipoMovimento;
-        mv.situacao = situacao;
+            mv.tipoMovimento = tipoMovimento;
+            mv.situacao = situacao;
 
-        return mv;
-      })
-    );
+            this.movimentos.push(mv);
+          })
+        },
+        error: (err) => {
+          console.error('Erro ao carregar movimentos:', err.error.mensagem);
+        }
+      }
+    )
   }
 
   detalharMovimento(id: any) {

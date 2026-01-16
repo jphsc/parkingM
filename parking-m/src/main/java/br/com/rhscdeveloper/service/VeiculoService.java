@@ -153,7 +153,7 @@ public class VeiculoService {
 			throw new GlobalException(ConstantesSistema.COD_ERRO_VALIDACAO, e.getMessage());
 			
 		}  catch (ConstraintViolationException e) {
-			LOG.info(e.getCause());
+			LOG.warn(e.getMessage());
 			throw new GlobalException(ConstantesSistema.COD_ERRO_VALIDACAO, "A placa informada já existe no sistema. Verifique se o veículo está correto");
 			
 		} catch(PropertyValueException e) { 

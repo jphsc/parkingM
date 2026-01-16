@@ -4,5 +4,5 @@ export interface Veiculo {
   montadora: string;
   dtRegistro: string;
   placa: string;
-  versao: Date
+  versao: string;
 }

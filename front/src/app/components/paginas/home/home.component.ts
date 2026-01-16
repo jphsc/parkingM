@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
+import { RespostaReqBackend } from 'src/app/models/resposta.model';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
 import { Enumeradores } from 'src/app/utils/helper';
@@ -30,18 +31,26 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mvs.getMovimentosAbertos().subscribe(movvs => {
-      movvs.forEach(mv => {
-        const tipoMov:string = Enumeradores.factory('TipoMovVeiculo').getDescricao(mv.tipoMovimento);
-        const situacaoMov:string = Enumeradores.factory('SituacaoMovimento').getDescricao(mv.situacao);
+    this.mvs.getMovimentosAbertos().subscribe({
+      next: (resp: RespostaReqBackend<MovimentoVeiculo>) => {
+        resp.registros.forEach(mv => {
+          const tipoMov:string = Enumeradores.factory('TipoMovVeiculo').getDescricao(mv.tipoMovimento);
+          const situacaoMov:string = Enumeradores.factory('SituacaoMovimento').getDescricao(mv.situacao);
 
           mv.tipoMovimento = tipoMov;
           mv.situacao = situacaoMov;
 
           this.movAbertos.push(mv);
-      })
-      this.loaded = true;
-    });
+          this.loaded = true;
+        })
+      },
+      error: (err) => {
+        console.error('Erro ao carregar movimentos abertos:', err.error.mensagem);
+      }
+    }
+  );
+
+
 
     this.placaForm.get("placaInput")?.valueChanges.subscribe(value => {
       if(!value) return;

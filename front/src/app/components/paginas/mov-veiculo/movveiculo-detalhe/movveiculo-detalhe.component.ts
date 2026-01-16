@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
+import { RespostaReqBackend } from 'src/app/models/resposta.model';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
 import { Enumeradores } from 'src/app/utils/helper';
 
@@ -20,15 +21,19 @@ export class MovveiculoDetalheComponent implements OnInit {
     this.isTrueFalse = (paginaAcao === 'detalhe') ? true : false;
 
     this.mvs.getMovimentoById(idMovVeiculo)
-      .subscribe(resp => {
+      .subscribe({
+        next: (resp: RespostaReqBackend<MovimentoVeiculo>) => {
+          resp.registros.forEach((mv:MovimentoVeiculo) => {
+            let situacao = Enumeradores.factory('SituacaoMovimento').getDescricao(mv.situacao);
+            let tipoMovimento = Enumeradores.factory('TipoMovVeiculo').getDescricao(mv.tipoMovimento);
 
-        let situacao = Enumeradores.factory('SituacaoMovimento').getDescricao(resp.situacao);
-        let tipoMovimento = Enumeradores.factory('TipoMovVeiculo').getDescricao(resp.tipoMovimento);
-
-        resp.situacao = situacao;
-        resp.tipoMovimento = tipoMovimento;
-        this.movimento = resp;
-      });
+            mv.situacao = situacao;
+            mv.tipoMovimento = tipoMovimento;
+            this.movimento = mv;
+          })
+        }
+      }
+    );
   }
 
   constructor(private mvs:MovimentoVeiculoService, private rota: ActivatedRoute){}
