@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RegraFinanceira } from 'src/app/models/regra-financeira';
 import { RespostaReqBackend } from 'src/app/models/resposta.model';
+import { LoadingService } from 'src/app/services/loading.service';
 import { RegraFinanceiraService } from 'src/app/services/regra-financeira.service';
 import { Enumeradores } from 'src/app/utils/helper';
 
@@ -13,8 +14,14 @@ import { Enumeradores } from 'src/app/utils/helper';
 export class RegraListarComponent implements OnInit {
 
   regras: RegraFinanceira[] = [];
+  isLoading$: Observable<boolean>;
+  loadingMessage$: Observable<string>;
+  isLoaded: boolean = false;
 
-  constructor(private regraFinService: RegraFinanceiraService){ }
+  constructor(private regraFinService: RegraFinanceiraService, private ls: LoadingService){
+    this.isLoading$ = this.ls.isLoading$;
+    this.loadingMessage$ = this.ls.loadingMessage$;
+  }
 
   ngOnInit(): void {
     this.getAllRegras();
@@ -34,7 +41,13 @@ export class RegraListarComponent implements OnInit {
 
           this.regras.push(rf);
         })
-      }
+      },
+      error: (err) => {
+        console.error('Erro ao carregar regras financeiras:', err.error.mensagem);
+      },
+      complete: () => {
+        this.isLoaded = true;
+      },
     });
   }
 }

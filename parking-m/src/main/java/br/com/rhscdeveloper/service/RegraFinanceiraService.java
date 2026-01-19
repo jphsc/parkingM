@@ -33,6 +33,7 @@ public class RegraFinanceiraService {
 	public RegraFinanceiraRespostaDTO obterRegraFinanceiraById(Integer id) {
 		
 		try {
+			Thread.sleep(4000);	
 			RegraFinanceiraVO vo = RegraFinanceiraVO.findById(id);
 			if(isNull(vo)) {
 				throw new NullPointerException(ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);
@@ -53,6 +54,7 @@ public class RegraFinanceiraService {
 
 	public RegraFinanceiraRespostaDTO obterRegrasFinanceiras() {
 		try {
+			Thread.sleep(4000);	
 			return RegraFinanceiraRespostaDTO.newInstance(RegraFinanceiraVO.findAll(Sort.by("id")).list(), TipoOperacao.CONSULTAR);
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -64,6 +66,7 @@ public class RegraFinanceiraService {
 
 	public RegraFinanceiraRespostaDTO obterRegraFinanceiraFiltro(RegraFinanceiraDTO filtro) {
 		try {
+			Thread.sleep(4000);	
 			return RegraFinanceiraRespostaDTO.newInstance(RegraFinanceiraVO.findAll(filtro), TipoOperacao.CONSULTAR);
 		} catch (NullPointerException e) {
 			LOG.info(e.getMessage());
@@ -81,6 +84,7 @@ public class RegraFinanceiraService {
 	public RegraFinanceiraRespostaDTO atualizarRegraFinanceira(RegraFinanceiraDTO filtro) {
 		
 		try {
+			Thread.sleep(4000);	
 			if(filtro.getId() == 0 || filtro.getId().equals(null) || isNull(filtro.getId())) {
 				throw new NoSuchFieldError(ConstantesSistema.MSG_ERRO_ID);
 			}
@@ -114,6 +118,7 @@ public class RegraFinanceiraService {
 	public RegraFinanceiraRespostaDTO cadastrarRegraFinanceira(RegraFinanceiraDTO filtro) {
 		
 		try {
+			Thread.sleep(4000);	
 			RegraFinanceiraVO vo = new RegraFinanceiraVO.Builder().setDescricao(filtro.getDescricao())
 					.setDtHrInicioValidade(filtro.getDtHrInicioValidade()).setDtHrFimValidade(filtro.getDtHrFimValidade())
 					.setSituacao(filtro.getSituacao()).setTipoCobranca(filtro.getTipoCobranca())
@@ -147,6 +152,7 @@ public class RegraFinanceiraService {
 	 * */
 	public String deletarRegraFinanceira(Integer id) {
 		try {
+			Thread.sleep(4000);	
 			RegraFinanceiraVO regra = RegraFinanceiraVO.findById(id);
 			
 			if(isNull(regra)) {

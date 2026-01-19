@@ -33,6 +33,7 @@ public class MovimentoVeiculoService {
 	public MovimentoVeiculoRespostaDTO criarMovimentoVeiculo(MovimentoVeiculoDTO dto) {
 		
 		try {
+			Thread.sleep(4000);	
 			VeiculoVO veiculo = (VeiculoVO) VeiculoVO.findByIdOptional(dto.getIdVeiculo()).orElseThrow(() -> new NullPointerException("Veículo de id "+dto.getIdVeiculo()+" não encontrado"));
 			RegraFinanceiraVO regraFinanceira = (RegraFinanceiraVO) RegraFinanceiraVO.findByIdOptional(dto.getIdRegra()).orElseThrow(() -> new NullPointerException("Regra de id "+dto.getIdRegra()+" não encontrada"));;
 			Double valor = 0.0;
@@ -84,6 +85,7 @@ public class MovimentoVeiculoService {
 	public MovimentoVeiculoRespostaDTO obterMovVeiculoById(Integer id) {
 		
 		try {
+			Thread.sleep(4000);	
 			MovimentoVeiculoVO vo = MovimentoVeiculoVO.findById(id);
 			MovimentoVeiculoRespostaDTO resposta = MovimentoVeiculoRespostaDTO.newInstance(Arrays.asList(vo), TipoOperacao.CONSULTAR);
 			obterSetarRegraFinanceiraMovVeiculo(Arrays.asList(vo), resposta);
@@ -102,6 +104,7 @@ public class MovimentoVeiculoService {
 	
 	public MovimentoVeiculoRespostaDTO obterMovsVeiculo() {
 		try {
+			Thread.sleep(4000);	
 			List<MovimentoVeiculoVO> movsVeiculo = MovimentoVeiculoVO.findAll().list();
 			MovimentoVeiculoRespostaDTO resposta = MovimentoVeiculoRespostaDTO.newInstance(movsVeiculo, TipoOperacao.CONSULTAR);
 			
@@ -121,7 +124,7 @@ public class MovimentoVeiculoService {
 	
 	public MovimentoVeiculoRespostaDTO obterMovsVeiculoAbertos(MovimentoVeiculoDTO dto) {
 		try {
-//			Thread.sleep(4000);
+			Thread.sleep(4000);
 			
 			List<MovimentoVeiculoVO> movsVeiculo = MovimentoVeiculoVO.findAll(dto);
 			MovimentoVeiculoRespostaDTO resposta = MovimentoVeiculoRespostaDTO.newInstance(movsVeiculo, TipoOperacao.CONSULTAR);
@@ -143,6 +146,7 @@ public class MovimentoVeiculoService {
 	public MovimentoVeiculoRespostaDTO encerrarMovVeiculo(MovimentoVeiculoDTO dto) {
 		
 		try {
+			Thread.sleep(4000);	
 			MovimentoVeiculoVO movVeiculo = (MovimentoVeiculoVO) MovimentoVeiculoVO.findByIdOptional(dto.getId()).orElseThrow(() -> new NullPointerException("Movimento de id "+dto.getId()+" não encontrado"));
 			RegraFinanceiraVO regra = (RegraFinanceiraVO) RegraFinanceiraVO.findByIdOptional(dto.getIdRegra()).orElseThrow(() -> new NullPointerException("Regra de id não "+dto.getIdRegra()+" encontrada"));;
 			Double valor = gerarValorMovimento(movVeiculo, regra, dto.getDtHrEntrada());

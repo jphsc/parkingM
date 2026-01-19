@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
 import { RespostaReqBackend } from 'src/app/models/resposta.model';
+import { LoadingService } from 'src/app/services/loading.service';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
 import { Enumeradores } from 'src/app/utils/helper';
 
@@ -12,8 +14,18 @@ import { Enumeradores } from 'src/app/utils/helper';
 })
 export class MovveiculoDetalheComponent implements OnInit {
 
-  movimento:MovimentoVeiculo = {};
-  isTrueFalse:boolean = false;
+  protected movimento:MovimentoVeiculo = {};
+  protected isTrueFalse:boolean = false;
+  protected isLoading$: Observable<boolean>;
+  protected loadingMessage$: Observable<string>;
+  protected isLoaded: boolean = false;
+
+  constructor(private mvs:MovimentoVeiculoService, private rota: ActivatedRoute
+    , private ls:LoadingService
+  ){
+    this.isLoading$ = this.ls.isLoading$;
+    this.loadingMessage$ = this.ls.loadingMessage$;
+  }
 
   ngOnInit(): void {
     let idMovVeiculo = Number(this.rota.snapshot.paramMap.get("id"));
@@ -22,7 +34,7 @@ export class MovveiculoDetalheComponent implements OnInit {
 
     this.mvs.getMovimentoById(idMovVeiculo)
       .subscribe({
-        next: (resp: RespostaReqBackend<MovimentoVeiculo>) => {
+        next: (resp) => {
           resp.registros.forEach((mv:MovimentoVeiculo) => {
             let situacao = Enumeradores.factory('SituacaoMovimento').getDescricao(mv.situacao);
             let tipoMovimento = Enumeradores.factory('TipoMovVeiculo').getDescricao(mv.tipoMovimento);
@@ -31,11 +43,15 @@ export class MovveiculoDetalheComponent implements OnInit {
             mv.tipoMovimento = tipoMovimento;
             this.movimento = mv;
           })
+        },
+        error: (err) => {
+          console.log('Erro ao obter os movimentos de veículos: ', err.error.mensagem);
+        },
+        complete: ()=>{
+          this.isLoaded = true;
         }
       }
     );
   }
-
-  constructor(private mvs:MovimentoVeiculoService, private rota: ActivatedRoute){}
 
 }

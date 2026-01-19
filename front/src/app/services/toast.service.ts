@@ -20,7 +20,6 @@ export class ToastService {
     this.classToast = this.isSucesso ? 'toast-sucesso' : 'toast-erro';
     this.duracaoEmMs = this.isSucesso ? 3000 : 10000;
 
-    console.log(this.classToast, this.isSucesso);
     this.toast();
   }
 

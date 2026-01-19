@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { CardLateralComponent } from './card-lateral/card-lateral.component';
 import { CardCabecalhoComponent } from './card-cabecalho/card-cabecalho.component';
-import { AppRoutingModule } from '../../app-routing.module';
 import { LoadingComponent } from './loading/loading.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -15,7 +15,7 @@ import { LoadingComponent } from './loading/loading.component';
   ],
   imports: [
     CommonModule,
-    AppRoutingModule
+    RouterModule
   ],
   exports: [
     CardCabecalhoComponent,

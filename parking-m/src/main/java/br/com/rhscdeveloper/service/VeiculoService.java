@@ -36,6 +36,7 @@ public class VeiculoService {
 	public VeiculoRespostaDTO obterVeiculoById(Integer id) {
 		
 		try {
+			Thread.sleep(4000);
 			return VeiculoRespostaDTO.newInstance(Arrays.asList(VeiculoVO.findById(id)), TipoOperacao.CONSULTAR);
 		} catch (NullPointerException e) {
 			LOG.info(e.getMessage());
@@ -51,11 +52,8 @@ public class VeiculoService {
 
 	public VeiculoRespostaDTO obterVeiculos() {
 		try {
+			Thread.sleep(4000);
 			List<VeiculoVO> veiculos = VeiculoVO.findAll(Sort.by("id")).list();
-			
-			if(veiculos.isEmpty()) {
-				throw new NullPointerException(ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);
-			}
 			
 			return VeiculoRespostaDTO.newInstance(veiculos, TipoOperacao.CONSULTAR);
 		} catch (NullPointerException e) {
@@ -96,10 +94,11 @@ public class VeiculoService {
 	// TODO implementar validacao dos enumeradores
 	public VeiculoRespostaDTO atualizarVeiculo(VeiculoDTO filtro) {
 		
-		
 		try {
-			VeiculoVO voPersistente = atualizarVeiculoBase(filtro);
-			VeiculoVO newVo = VeiculoVO.dtoToVo(voPersistente, filtro);
+//			Thread.sleep(4000);
+//			VeiculoVO voPersistente = atualizarVeiculoBase(filtro);
+//			VeiculoVO newVo = VeiculoVO.dtoToVo(voPersistente, filtro);
+			VeiculoVO newVo = atualizarVeiculoBase(filtro);
 			
 			return VeiculoRespostaDTO.newInstance(Arrays.asList(newVo), filtro, TipoOperacao.EDITAR);
 		} catch (NullPointerException e) {
@@ -136,6 +135,9 @@ public class VeiculoService {
 			throw new MyConstraintViolationException("A placa informada já existe no sistema. Verifique se o veículo está correto");
 		}
 		
+		voPersistenteId = VeiculoVO.dtoToVo(voPersistenteId, filtro);
+		VeiculoVO.persist(voPersistenteId);
+		
 		return voPersistenteId;
 	}
 
@@ -143,6 +145,7 @@ public class VeiculoService {
 	public VeiculoRespostaDTO cadastrarVeiculo(VeiculoDTO filtro) {
 		
 		try {
+			Thread.sleep(4000);
 			VeiculoVO vo = new VeiculoVO(filtro.getModelo(), filtro.getMontadora(), new Date(), filtro.getPlaca(), new Date());
 			
 			cadastrarVeiculoBase(vo);
@@ -183,7 +186,7 @@ public class VeiculoService {
 	
 	public String deletarVeiculo(Integer id) {
 		try {
-					
+			Thread.sleep(4000);	
 			deletarVeiculoBase(id);
 			return new Gson().toJson(new MensagemResposta().gerarMensagem(TipoOperacao.EXCLUIR, VeiculoVO.class));
 		} catch (NullPointerException e) {

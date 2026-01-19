@@ -5,6 +5,7 @@ import { MovVeiculoRoutingModule } from './mov-veiculo-routing.module';
 import { MovveiculoListarComponent } from './movveiculo-listar/movveiculo-listar.component';
 import { MovveiculoFormComponent } from './movveiculo-form/movveiculo-form.component';
 import { MovveiculoDetalheComponent } from './movveiculo-detalhe/movveiculo-detalhe.component';
+import { ComumModule } from '../../comum/comum.module';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { MovveiculoDetalheComponent } from './movveiculo-detalhe/movveiculo-deta
   ],
   imports: [
     CommonModule,
-    MovVeiculoRoutingModule
+    MovVeiculoRoutingModule,
+    ComumModule
   ]
 })
 export class MovVeiculoModule { }

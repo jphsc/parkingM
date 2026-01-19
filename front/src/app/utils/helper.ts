@@ -7,7 +7,7 @@ export interface Enumerador{
   [key: string]: ItemEnum;
 }
 
-export enum AcaoForm {
+export enum Acao {
   EDITAR,
   CADASTRAR
 }

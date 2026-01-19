@@ -11,7 +11,7 @@
 <div class="div-movs-aberto">
   <h2 class="h3">Movimentos abertos</h2>
   <app-loading [isLoading]="(isLoading$ | async) ?? false"></app-loading>
-  <div *ngIf="loaded">
+  <div *ngIf="isLoaded">
     <table class="tabela-generica" *ngIf="movAbertos.length != 0; else semMovimentos">
       <thead>
         <tr>

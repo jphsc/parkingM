@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   movAbertos: MovimentoVeiculo[] = [];
   isLoading$: Observable<boolean>;
   loadingMessage$: Observable<string>;
-  loaded: boolean = false;
+  isLoaded: boolean = false;
   placaForm = new FormGroup({ placaInput: new FormControl('', [Validators.required, Validators.minLength(7)]) });
 
   constructor(private mvs: MovimentoVeiculoService, private loadingService: LoadingService,
@@ -41,16 +41,16 @@ export class HomeComponent implements OnInit {
           mv.situacao = situacaoMov;
 
           this.movAbertos.push(mv);
-          this.loaded = true;
         })
       },
       error: (err) => {
         console.error('Erro ao carregar movimentos abertos:', err.error.mensagem);
+      },
+      complete: () => {
+        this.isLoaded = true;
       }
-    }
-  );
 
-
+    });
 
     this.placaForm.get("placaInput")?.valueChanges.subscribe(value => {
       if(!value) return;
@@ -60,7 +60,6 @@ export class HomeComponent implements OnInit {
   }
 
   protected gerarMovimentoAvulso(): void {
-
     console.log(this.placaForm.value);
   }
 

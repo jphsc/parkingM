@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
 import { RespostaReqBackend } from 'src/app/models/resposta.model';
+import { LoadingService } from 'src/app/services/loading.service';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
 import { Enumeradores } from 'src/app/utils/helper';
 
@@ -13,8 +15,15 @@ import { Enumeradores } from 'src/app/utils/helper';
 export class MovveiculoListarComponent implements OnInit {
 
   movimentos:MovimentoVeiculo[] = [];
+  isLoading$: Observable<boolean>;
+  loadingMessage$: Observable<string>;
+  isLoaded: boolean = false;
 
-  constructor(private mvs: MovimentoVeiculoService, private rota: Router){ }
+  constructor(private mvs: MovimentoVeiculoService, private rota: Router
+    , private ls: LoadingService){
+      this.isLoading$ = this.ls.isLoading$;
+      this.loadingMessage$ = this.ls.loadingMessage$;
+    }
 
   ngOnInit(): void {
     this.getAllMovimentos();
@@ -35,6 +44,9 @@ export class MovveiculoListarComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erro ao carregar movimentos:', err.error.mensagem);
+        },
+        complete: () => {
+          this.isLoaded = true;
         }
       }
     )
