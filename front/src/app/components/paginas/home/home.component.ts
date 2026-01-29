@@ -6,6 +6,7 @@ import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
 import { RespostaReqBackend } from 'src/app/models/resposta.model';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { Enumeradores } from 'src/app/utils/helper';
 import { Utils } from 'src/app/utils/util';
 
@@ -24,8 +25,7 @@ export class HomeComponent implements OnInit {
   placaForm = new FormGroup({ placaInput: new FormControl('', [Validators.required, Validators.minLength(7)]) });
 
   constructor(private mvs: MovimentoVeiculoService, private loadingService: LoadingService,
-    private rota: Router
-  ) {
+    private rota: Router, private ts:ToastService) {
     this.isLoading$ = this.loadingService.isLoading$;
     this.loadingMessage$ = this.loadingService.loadingMessage$;
   }
@@ -41,15 +41,14 @@ export class HomeComponent implements OnInit {
           mv.situacao = situacaoMov;
 
           this.movAbertos.push(mv);
-        })
+          });
+        this.isLoaded = true;
       },
       error: (err) => {
         console.error('Erro ao carregar movimentos abertos:', err.error.mensagem);
-      },
-      complete: () => {
+        this.ts.gerarToast("Não foi possível carregar os movimentos, tente novamente mais tarde", false);
         this.isLoaded = true;
       }
-
     });
 
     this.placaForm.get("placaInput")?.valueChanges.subscribe(value => {

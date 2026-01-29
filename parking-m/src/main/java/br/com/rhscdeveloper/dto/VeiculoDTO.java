@@ -1,7 +1,7 @@
 package br.com.rhscdeveloper.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -13,10 +13,10 @@ public class VeiculoDTO implements Serializable {
 	private Integer id;
 	private String modelo;
 	private String montadora;
-	private Date dtRegistro;
+	private LocalDateTime dtRegistro;
 	private String placa;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private Date versao;
+	private LocalDateTime versao;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private Integer pagina;
 	
@@ -24,7 +24,7 @@ public class VeiculoDTO implements Serializable {
 		
 	}
 
-	public VeiculoDTO(Integer id, String modelo, String montadora, Date dtRegistro, String placa, Date versao) {
+	public VeiculoDTO(Integer id, String modelo, String montadora, LocalDateTime dtRegistro, String placa, LocalDateTime versao) {
 		this.id = id;
 		this.modelo = modelo;
 		this.montadora = montadora;
@@ -66,11 +66,11 @@ public class VeiculoDTO implements Serializable {
 		this.montadora = montadora;
 	}
 
-	public Date getDtRegistro() {
+	public LocalDateTime getDtRegistro() {
 		return dtRegistro;
 	}
 
-	public void setDtRegistro(Date dtRegistro) {
+	public void setDtRegistro(LocalDateTime dtRegistro) {
 		this.dtRegistro = dtRegistro;
 	}
 
@@ -82,11 +82,11 @@ public class VeiculoDTO implements Serializable {
 		this.placa = placa;
 	}
 
-	public Date getVersao() {
+	public LocalDateTime getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Date versao) {
+	public void setVersao(LocalDateTime versao) {
 		this.versao = versao;
 	}
 
@@ -109,9 +109,9 @@ public class VeiculoDTO implements Serializable {
 		private Integer id;
 		private String modelo;
 		private String montadora;
-		private Date dtRegistro;
+		private LocalDateTime dtRegistro;
 		private String placa;
-		private Date versao;
+		private LocalDateTime versao;
 		
 		public VeiculoDTO build() {
 			return new VeiculoDTO(this);
@@ -132,7 +132,7 @@ public class VeiculoDTO implements Serializable {
 			return this;
 		}
 
-		public Builder setDtRegistro(Date dtRegistro) {
+		public Builder setDtRegistro(LocalDateTime dtRegistro) {
 			this.dtRegistro = dtRegistro;
 			return this;
 		}
@@ -142,7 +142,7 @@ public class VeiculoDTO implements Serializable {
 			return this;
 		}
 
-		public Builder setVersao(Date versao) {
+		public Builder setVersao(LocalDateTime versao) {
 			this.versao = versao;
 			return this;
 		}

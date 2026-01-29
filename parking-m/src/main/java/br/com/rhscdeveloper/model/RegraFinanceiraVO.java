@@ -1,13 +1,16 @@
 package br.com.rhscdeveloper.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 import org.hibernate.annotations.DynamicUpdate;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.com.rhscdeveloper.dto.RegraFinanceiraDTO;
 import br.com.rhscdeveloper.enumerator.Enums.Situacao;
@@ -38,53 +41,54 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 	@Column(name = "ref_descricao", nullable = false)
 	private String descricao;
 	
-	@Column(name = "ref_valor", nullable = false, precision = 2)
+	@Column(name = "ref_valor", nullable = false, precision = 2, updatable = false)
 	private Double valor;
 	
-	@Column(name = "ref_metodo_pag", nullable = false)
+	@Column(name = "ref_metodo_pag", nullable = false, updatable = false)
 	private Integer tipoCobranca;
 	
-	@Column(name = "ref_tipo_movimento", nullable = false)
+	@Column(name = "ref_tipo_movimento", nullable = false, updatable = false)
 	private Integer tipoMovimento;
 	
-	@Column(name = "ref_ini_validade", nullable = false)
-	private Date dtHrInicioValidade;
+	@JsonFormat
+	@Column(name = "ref_ini_validade", nullable = false, updatable = false)
+	private LocalDate dtInicioValidade;
 	
 	@Column(name = "ref_fim_validade", nullable = true)
-	private Date dtHrFimValidade;
+	private LocalDate dtFimValidade;
 	
 	@Column(name = "ref_situacao", nullable = false)
 	private Integer situacao;
 	
 	@Version
 	@Column(name = "ref_versao", nullable = false)
-	private Date versao;
+	private LocalDateTime versao;
 	
 	public RegraFinanceiraVO() {
 		
 	}
 
 	public RegraFinanceiraVO(String descricao, Double valor, TipoCobranca tipoCobranca, TipoMovimento tipoMovimento,
-			Date dtHrInicioValidade, Date dtHrFimValidade, Situacao situacao, Date versao) {
+			LocalDate dtInicioValidade, LocalDate dtFimValidade, Situacao situacao, LocalDateTime versao) {
 		this.descricao = descricao;
 		this.valor = valor;
 		this.tipoCobranca = tipoCobranca.getId();
 		this.tipoMovimento = tipoMovimento.getId();
-		this.dtHrInicioValidade = dtHrInicioValidade;
-		this.dtHrFimValidade = dtHrFimValidade;
+		this.dtInicioValidade = dtInicioValidade;
+		this.dtFimValidade = dtFimValidade;
 		this.situacao = situacao.getId();
 		this.versao = versao;
 	}
 
 	public RegraFinanceiraVO(Integer id, String descricao, Double valor, TipoCobranca tipoCobranca, TipoMovimento tipoMovimento,
-			Date dtHrInicioValidade, Date dtHrFimValidade, Situacao situacao, Date versao) {
+			LocalDate dtInicioValidade, LocalDate dtFimValidade, Situacao situacao, LocalDateTime versao) {
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
 		this.tipoCobranca = tipoCobranca.getId();
 		this.tipoMovimento = tipoMovimento.getId();
-		this.dtHrInicioValidade = dtHrInicioValidade;
-		this.dtHrFimValidade = dtHrFimValidade;
+		this.dtInicioValidade = dtInicioValidade;
+		this.dtFimValidade = dtFimValidade;
 		this.situacao = situacao.getId();
 		this.versao = versao;
 	}
@@ -95,8 +99,8 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		this.valor = b.valor;
 		this.tipoCobranca = b.tipoCobranca;
 		this.tipoMovimento = b.tipoMovimento;
-		this.dtHrInicioValidade = b.dtHrInicioValidade;
-		this.dtHrFimValidade = b.dtHrFimValidade;
+		this.dtInicioValidade = b.dtInicioValidade;
+		this.dtFimValidade = b.dtFimValidade;
 		this.situacao = b.situacao;
 		this.versao = b.versao;
 	}
@@ -141,20 +145,20 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		this.tipoMovimento = tipoMovimento.getId();
 	}
 
-	public Date getDtHrInicioValidade() {
-		return dtHrInicioValidade;
+	public LocalDate getDtInicioValidade() {
+		return dtInicioValidade;
 	}
 
-	public void setDtHrInicioValidade(Date dtHrInicioValidade) {
-		this.dtHrInicioValidade = dtHrInicioValidade;
+	public void setDtInicioValidade(LocalDate dtInicioValidade) {
+		this.dtInicioValidade = dtInicioValidade;
 	}
 
-	public Date getDtHrFimValidade() {
-		return dtHrFimValidade;
+	public LocalDate getDtFimValidade() {
+		return dtFimValidade;
 	}
 
-	public void setDtHrFimValidade(Date dtHrFimValidade) {
-		this.dtHrFimValidade = dtHrFimValidade;
+	public void setDtFimValidade(LocalDate dtFimValidade) {
+		this.dtFimValidade = dtFimValidade;
 	}
 
 	public Integer getSituacao() {
@@ -165,11 +169,11 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		this.situacao = situacao.getId();
 	}
 
-	public Date getVersao() {
+	public LocalDateTime getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Date versao) {
+	public void setVersao(LocalDateTime versao) {
 		this.versao = versao;
 	}
 
@@ -193,8 +197,8 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 	@Override
 	public String toString() {
 		return "RegraFinanceiraVO [id=" + id + ", descricao=" + descricao + ", valor=" + valor + ", tipoCobranca="
-				+ tipoCobranca + ", tipoMovimento=" + tipoMovimento + ", dtHrInicioValidade=" + dtHrInicioValidade
-				+ ", dtHrFimValidade=" + dtHrFimValidade + ", situacao=" + situacao + ", versao=" + versao + "]";
+				+ tipoCobranca + ", tipoMovimento=" + tipoMovimento + ", dtInicioValidade=" + dtInicioValidade
+				+ ", dtFimValidade=" + dtFimValidade + ", situacao=" + situacao + ", versao=" + versao + "]";
 	}
 
 	@Override
@@ -208,10 +212,10 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		private Double valor;
 		private Integer tipoCobranca;
 		private Integer tipoMovimento;
-		private Date dtHrInicioValidade;
-		private Date dtHrFimValidade;
+		private LocalDate dtInicioValidade;
+		private LocalDate dtFimValidade;
 		private Integer situacao;
-		private Date versao;
+		private LocalDateTime versao;
 		
 		public RegraFinanceiraVO build() {
 			return new RegraFinanceiraVO(this);
@@ -242,13 +246,13 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 			return this;
 		}
 
-		public Builder setDtHrInicioValidade(Date dtHrInicioValidade) {
-			this.dtHrInicioValidade = dtHrInicioValidade;
+		public Builder setDtInicioValidade(LocalDate dtInicioValidade) {
+			this.dtInicioValidade = dtInicioValidade;
 			return this;
 		}
 
-		public Builder setDtHrFimValidade(Date dtHrFimValidade) {
-			this.dtHrFimValidade = dtHrFimValidade;
+		public Builder setDtFimValidade(LocalDate dtFimValidade) {
+			this.dtFimValidade = dtFimValidade;
 			return this;
 		}
 
@@ -257,7 +261,7 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 			return this;
 		}
 
-		public Builder setVersao(Date versao) {
+		public Builder setVersao(LocalDateTime versao) {
 			this.versao = versao;
 			return this;
 		}
@@ -269,10 +273,10 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 		voPersistente.valor = dto.getValor();
 		voPersistente.tipoCobranca = dto.getTipoCobranca();
 		voPersistente.tipoMovimento = dto.getTipoMovimento();
-		voPersistente.dtHrInicioValidade = dto.getDtHrInicioValidade();
-		voPersistente.dtHrFimValidade = dto.getDtHrFimValidade();
+		voPersistente.dtInicioValidade = dto.getDtInicioValidade();
+		voPersistente.dtFimValidade = dto.getDtFimValidade();
 		voPersistente.situacao = dto.getSituacao();
-		voPersistente.versao = Objects.isNull(dto.getVersao()) ? new Date() : dto.getVersao();
+		voPersistente.versao = Objects.isNull(dto.getVersao()) ? LocalDateTime.now() : dto.getVersao();
 		
 		return voPersistente;
 	}
@@ -306,9 +310,9 @@ public class RegraFinanceiraVO extends PanacheEntityBase implements Serializable
 			parametros.put("tipoMovimento", filtro.getTipoMovimento());
 		}
 		
-		if(filtro.getDtHrFimValidade() != null && filtro.getDtHrFimValidade() == null && Objects.isNull(filtro.getDtHrFimValidade())) {
-			sb.append(" and dtHrFimValidade =: dtHrFimValidade");
-			parametros.put("dtHrFimValidade", filtro.getDtHrFimValidade());
+		if(filtro.getDtFimValidade() != null && filtro.getDtFimValidade() == null && Objects.isNull(filtro.getDtFimValidade())) {
+			sb.append(" and dtFimValidade =: dtFimValidade");
+			parametros.put("dtFimValidade", filtro.getDtFimValidade());
 		}
 		
 		if(filtro.getSituacao() != null && filtro.getSituacao() != 0) {

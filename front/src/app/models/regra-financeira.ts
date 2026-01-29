@@ -1,11 +1,11 @@
 export interface RegraFinanceira {
-  id: number,
+  id?: number,
   descricao: string,
   valor: number,
   tipoCobranca: any,
   tipoMovimento: any,
-  dtHrInicioValidade: Date,
-  dtHrFimValidade?: Date,
+  dtInicioValidade: any,
+  dtFimValidade?: any,
   situacao: any,
-  versao: Date
+  versao: any
 }

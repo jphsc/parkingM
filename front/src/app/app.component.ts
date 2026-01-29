@@ -11,7 +11,7 @@ export class AppComponent implements AfterContentChecked {
 
   protected tituloPagina: string = "";
   protected mostrarCabecalho = true;
-  public title = 'front';
+  public title = 'ParkingM';
 
   constructor(private rota: Router, private titleService: Title) { }
 
@@ -19,7 +19,7 @@ export class AppComponent implements AfterContentChecked {
     const url = this.rota.url;
     this.tituloPagina = this.getTituloPagina(url);
     this.mostrarCabecalho = !(url == '/pagina-nao-encontrada');
-    // this.titleService.setTitle(this.mostrarCabecalho ? `ParkingM - ${this.tituloPagina}` : 'ParkingM - Página não encontrada');
+    // this.titleService.setTitle(this.mostrarCabecalho ? ` - ${this.tituloPagina}` : 'ParkingM - Página não encontrada');
     this.titleService.setTitle(this.mostrarCabecalho ? `${this.title} - ${this.tituloPagina}` : `${this.title} - Página não encontrada`);
   }
 
@@ -27,53 +27,52 @@ export class AppComponent implements AfterContentChecked {
 
     const regex = /^\/([^\/]+\/[^\/]+)/; //retorna todo o conteudo entre o primeiro e o terceiro '/'
     const match = url.match(regex)?.[0];
-
-    if(url == '/home') {
-      this.title = "Home";
-      return this.title;
-    }
+    let titulo = "";
 
     switch(match){
       case '/veiculo/cadastrar':
-        this.title = "Cadastrar veículo";
+        titulo = "Cadastrar veículo";
         break;
       case '/veiculo/listar':
-        this.title = "Listar veículos";
+        titulo = "Listar veículos";
         break;
       case '/veiculo/editar':
-        this.title = "Editar veículo";
+        titulo = "Editar veículo";
         break;
       case '/veiculo/detalhe':
-        this.title = "Detalhes do veículo";
+        titulo = "Detalhes do veículo";
         break;
       case '/movimento/cadastrar':
-        this.title = "Gerar movimento de veículo";
+        titulo = "Gerar movimento de veículo";
         break;
       case '/movimento/listar':
-        this.title = "Listar movimentos de veículos";
+        titulo = "Listar movimentos de veículos";
         break;
       case '/movimento/editar':
-        this.title = "Encerrar movimento de veículo";
+        titulo = "Encerrar movimento de veículo";
         break;
       case '/movimento/detalhe':
-        this.title = "Detalhes do movimento do veículo";
+        titulo = "Detalhes do movimento do veículo";
         break;
       case '/movimento/finalizar':
-        this.title = "Finalizar movimento de veículo";
+        titulo = "Finalizar movimento de veículo";
         break;
       case '/regra/cadastrar':
-        this.title = "Cadastrar regra financeira";
+        titulo = "Cadastrar regra financeira";
         break;
       case '/regra/listar':
-        this.title = "Listar regras financeiras";
+        titulo = "Listar regras financeiras";
         break;
       case '/regra/editar':
-        this.title = "Editar regra financeira";
+        titulo = "Editar regra financeira";
         break;
       case '/regra/detalhe':
-        this.title = "Detalhes da regra financeira";
+        titulo = "Detalhes da regra financeira";
+        break;
+      default:
+        titulo = 'Home';
         break;
     }
-  return this.title;
+  return titulo;
   }
 }

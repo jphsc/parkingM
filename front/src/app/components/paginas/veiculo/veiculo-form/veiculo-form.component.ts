@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Veiculo } from 'src/app/models/veiculo.model';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -32,7 +32,7 @@ export class VeiculoFormComponent implements OnInit {
   });
 
   constructor(private fb: FormBuilder, private vs: VeiculoService, private ts: ToastService
-    , private rota: ActivatedRoute, private ls: LoadingService
+    , private rotaAct: ActivatedRoute, private ls: LoadingService, private rota: Router
   ) {
     this.isLoading$ = this.ls.isLoading$;
     this.loadingMessage$ = this.ls.loadingMessage$;
@@ -40,10 +40,10 @@ export class VeiculoFormComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.acao = this.rota.snapshot.url[0].path === 'cadastrar' ? Acao.CADASTRAR : Acao.EDITAR;
+    this.acao = this.rotaAct.snapshot.url[0].path === 'cadastrar' ? Acao.CADASTRAR : Acao.EDITAR;
 
     if(this.acao === Acao.EDITAR) {
-      let idVeiculo = Number(this.rota.snapshot.url[1].path);
+      let idVeiculo = Number(this.rotaAct.snapshot.url[1].path);
       this.getVeiculoById(idVeiculo);
     } else {
       this.isLoaded = true;
@@ -53,8 +53,19 @@ export class VeiculoFormComponent implements OnInit {
     .subscribe(placa => {
       if(!placa) return;
 
-      const placaFormatada = Utils.formatarPlaca(placa);
-      this.formVeiculo.get("placa")?.setValue(placaFormatada, { emitEvent: false });
+      this.formVeiculo.get("placa")?.setValue(Utils.formatarPlaca(placa), { emitEvent: false });
+    });
+
+    this.formVeiculo.get("modelo")?.valueChanges.subscribe(modelo => {
+      if(!modelo) return;
+
+      this.formVeiculo.get("modelo")?.setValue(Utils.uppercaseOnly(modelo), {emitEvent: false})
+    });
+
+    this.formVeiculo.get("montadora")?.valueChanges.subscribe(montadora => {
+      if(!montadora) return;
+
+      this.formVeiculo.get("montadora")?.setValue(Utils.uppercaseOnly(montadora), {emitEvent: false})
     });
   }
 
@@ -90,7 +101,6 @@ export class VeiculoFormComponent implements OnInit {
   }
 
   editarVeiculo():void {
-
     let veiculoForm:Veiculo = {
       id: this.formVeiculo.value.id!,
       placa: this.formVeiculo.value.placa!,
@@ -111,7 +121,8 @@ export class VeiculoFormComponent implements OnInit {
       this.vs.updateVeiculo(veiculoForm).subscribe({
         next: (resp) => {
           this.veiculo = resp.registros[0];
-          this.ts.gerarToast(`Veículo de placa ${resp.registros[0].placa} alterado com sucesso!`, true)
+          this.ts.gerarToast(`Veículo de placa ${resp.registros[0].placa} alterado com sucesso!`, true);
+          this.rota.navigate(['/veiculo/listar']);
         },
         error: (err) => {
             console.log('Erro ao atualizar o veículo: '+ err.error.mensagem);

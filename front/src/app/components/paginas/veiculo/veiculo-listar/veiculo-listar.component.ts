@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { RespostaReqBackend } from 'src/app/models/resposta.model';
 import { Veiculo } from 'src/app/models/veiculo.model';
 import { LoadingService } from 'src/app/services/loading.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { VeiculoService } from 'src/app/services/veiculo.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class VeiculoListarComponent implements OnInit {
   protected loadingMessage$: Observable<string>;
   protected isLoaded: boolean = false;
 
-  constructor(private vs: VeiculoService, private rota:Router, private ls: LoadingService){
+  constructor(private vs: VeiculoService, private rota:Router, private ls: LoadingService,
+    private ts:ToastService){
     this.isLoading$ = this.ls.isLoading$;
     this.loadingMessage$ = this.ls.loadingMessage$;
   }
@@ -36,11 +38,11 @@ export class VeiculoListarComponent implements OnInit {
       .subscribe({
         next: (resp) => {
           this.veiculos = resp.registros;
+          this.isLoaded = true;
         },
         error: (err) => {
           console.error('Erro ao carregar veículos, código: ', err.error.codigo);
-        },
-        complete: () => {
+          this.ts.gerarToast("Não foi possível carregar os veículos, tente novamente mais tarde", false);
           this.isLoaded = true;
         }
       });

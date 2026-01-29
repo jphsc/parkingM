@@ -2,6 +2,7 @@ package br.com.rhscdeveloper.enumerator;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class Enums {
 
@@ -20,7 +21,21 @@ public class Enums {
 		            }
 		        })
 		        .findFirst()
-		        .orElse(null);
+		        .orElseThrow(() -> new NoSuchElementException("Enumerador não encontrado"));
+	}
+	
+	public static <E extends Enum<E>> E getEnum(Class<E> enumClass, Integer id, String tipoEnum) {
+		return Arrays.stream(enumClass.getEnumConstants())
+			.filter(e -> {
+				try {
+					Method getId = e.getClass().getMethod("getId");
+					return id.equals(getId.invoke(e));
+				} catch (Exception e2) {
+					return false;
+				}
+			})
+			.findFirst()
+			.orElseThrow(() -> new NoSuchElementException(String.format("%s informado(a) é inválido(a)", tipoEnum)));
 	}
 	
 	public enum Booleano {

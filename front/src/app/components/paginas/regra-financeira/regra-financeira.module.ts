@@ -6,6 +6,7 @@ import { RegraListarComponent } from './regra-listar/regra-listar.component';
 import { RegraFormComponent } from './regra-form/regra-form.component';
 import { RegraDetalheComponent } from './regra-detalhe/regra-detalhe.component';
 import { ComumModule } from '../../comum/comum.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { ComumModule } from '../../comum/comum.module';
   imports: [
     CommonModule,
     RegraFinanceiraRoutingModule,
+    ReactiveFormsModule,
     ComumModule
   ]
 })

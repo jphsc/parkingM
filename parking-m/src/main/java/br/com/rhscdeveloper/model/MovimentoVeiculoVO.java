@@ -1,7 +1,7 @@
 package br.com.rhscdeveloper.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,17 +49,17 @@ public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializabl
 	private Integer tipoMovimento;
 	
 	@Column(name = "mvv_dt_hr_entrada", nullable = false, updatable = false)
-	private Date dtHrEntrada;
+	private LocalDateTime dtHrEntrada;
 
 	@Column(name = "mvv_dt_hr_saida", nullable = true)
-	private Date dtHrSaida;
+	private LocalDateTime dtHrSaida;
 	
 	@Column(name = "mvv_situacao", nullable = false)
 	private Integer situacao;
 
 	@Version
 	@Column(name = "mvv_versao", nullable = false)
-	private Date versao;
+	private LocalDateTime versao;
 	
 	@Transient
 	private MovimentoFinanceiroVO movFinanceiro;
@@ -68,8 +68,8 @@ public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializabl
 		
 	}
 	
-	public MovimentoVeiculoVO(VeiculoVO veiculoVO, Integer tipoMovimento, Date dtHrEntrada, Date dtHrSaida,
-			Integer situacao, Date versao) {
+	public MovimentoVeiculoVO(VeiculoVO veiculoVO, Integer tipoMovimento, LocalDateTime dtHrEntrada, LocalDateTime dtHrSaida,
+			Integer situacao, LocalDateTime versao) {
 		this.veiculoVO = veiculoVO;
 		this.tipoMovimento = tipoMovimento;
 		this.dtHrEntrada = dtHrEntrada;
@@ -112,19 +112,19 @@ public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializabl
 		this.tipoMovimento = tipoMovimento.getId();
 	}
 	
-	public Date getDtHrEntrada() {
+	public LocalDateTime getDtHrEntrada() {
 		return dtHrEntrada;
 	}
 
-	public void setDtHrEntrada(Date dtHrEntrada) {
+	public void setDtHrEntrada(LocalDateTime dtHrEntrada) {
 		this.dtHrEntrada = dtHrEntrada;
 	}
 
-	public Date getDtHrSaida() {
+	public LocalDateTime getDtHrSaida() {
 		return dtHrSaida;
 	}
 
-	public void setDtHrSaida(Date dtHrSaida) {
+	public void setDtHrSaida(LocalDateTime dtHrSaida) {
 		this.dtHrSaida = dtHrSaida;
 	}
 
@@ -136,11 +136,11 @@ public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializabl
 		this.situacao = situacao.getId();
 	}
 
-	public Date getVersao() {
+	public LocalDateTime getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Date versao) {
+	public void setVersao(LocalDateTime versao) {
 		this.versao = versao;
 	}
 
@@ -172,10 +172,10 @@ public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializabl
 		private Integer id;
 		private VeiculoVO veiculoVO;
 		private Integer tipoMovimento;
-		private Date dtHrEntrada;
-		private Date dtHrSaida;
+		private LocalDateTime dtHrEntrada;
+		private LocalDateTime dtHrSaida;
 		private Integer situacao;
-		private Date versao;
+		private LocalDateTime versao;
 		
 		public MovimentoVeiculoVO build() {
 			return new MovimentoVeiculoVO(this);
@@ -195,12 +195,12 @@ public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializabl
 			this.tipoMovimento = tipoMovimento;
 			return this;
 		}
-		public Builder setDtHrEntrada(Date dtHrEntrada) {
+		public Builder setDtHrEntrada(LocalDateTime dtHrEntrada) {
 			this.dtHrEntrada = dtHrEntrada;
 			return this;
 		}
 		
-		public Builder setDtHrSaida(Date dtHrSaida) {
+		public Builder setDtHrSaida(LocalDateTime dtHrSaida) {
 			this.dtHrSaida = dtHrSaida;
 			return this;
 		}
@@ -210,7 +210,7 @@ public class MovimentoVeiculoVO extends PanacheEntityBase implements Serializabl
 			return this;
 		}
 		
-		public Builder setVersao(Date versao) {
+		public Builder setVersao(LocalDateTime versao) {
 			this.versao = versao;
 			return this;
 		}

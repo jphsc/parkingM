@@ -1,7 +1,7 @@
 package br.com.rhscdeveloper.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,18 +14,18 @@ public class MovimentoVeiculoDTO implements Serializable {
 	private Integer idRegra;
 	private String placa;
 	private Integer tipoMovimento;
-	private Date dtHrEntrada;
-	private Date dtHrSaida;
+	private LocalDateTime dtHrEntrada;
+	private LocalDateTime dtHrSaida;
 	private Integer situacao;
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private Date versao;
+	private LocalDateTime versao;
     
     public MovimentoVeiculoDTO() {
     	
     }
 
-	public MovimentoVeiculoDTO(Integer id, Integer idVeiculo, Integer idRegra, String placa, Integer tipoMovimento, Date dtHrEntrada, 
-			Date dtHrSaida, Integer situacao, Date versao) {
+	public MovimentoVeiculoDTO(Integer id, Integer idVeiculo, Integer idRegra, String placa, Integer tipoMovimento, LocalDateTime dtHrEntrada, 
+			LocalDateTime dtHrSaida, Integer situacao, LocalDateTime versao) {
 		this.id = id;
 		this.idVeiculo = idVeiculo;
 		this.idRegra = idRegra;
@@ -89,19 +89,19 @@ public class MovimentoVeiculoDTO implements Serializable {
 		this.tipoMovimento = tipoMovimento;
 	}
 
-	public Date getDtHrEntrada() {
+	public LocalDateTime getDtHrEntrada() {
 		return dtHrEntrada;
 	}
 
-	public void setDtHrEntrada(Date dtHrEntrada) {
+	public void setDtHrEntrada(LocalDateTime dtHrEntrada) {
 		this.dtHrEntrada = dtHrEntrada;
 	}
 
-	public Date getDtHrSaida() {
+	public LocalDateTime getDtHrSaida() {
 		return dtHrSaida;
 	}
 
-	public void setDtHrSaida(Date dtHrSaida) {
+	public void setDtHrSaida(LocalDateTime dtHrSaida) {
 		this.dtHrSaida = dtHrSaida;
 	}
 
@@ -113,11 +113,11 @@ public class MovimentoVeiculoDTO implements Serializable {
 		this.situacao = situacao;
 	}
 
-	public Date getVersao() {
+	public LocalDateTime getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Date versao) {
+	public void setVersao(LocalDateTime versao) {
 		this.versao = versao;
 	}
     
@@ -128,10 +128,10 @@ public class MovimentoVeiculoDTO implements Serializable {
 		private Integer idRegra;
 		private String placa;
 		private Integer tipoMovimento;
-		private Date dtHrEntrada;
-		private Date dtHrSaida;
+		private LocalDateTime dtHrEntrada;
+		private LocalDateTime dtHrSaida;
 	    private Integer situacao;
-	    private Date versao;
+	    private LocalDateTime versao;
 		
 		public MovimentoVeiculoDTO build() {
 			return new MovimentoVeiculoDTO(this);
@@ -162,12 +162,12 @@ public class MovimentoVeiculoDTO implements Serializable {
 			return this;
 		}
 
-		public Builder setDtHrEntrada(Date dtHrEntrada) {
+		public Builder setDtHrEntrada(LocalDateTime dtHrEntrada) {
 			this.dtHrEntrada = dtHrEntrada;
 			return this;
 		}
 
-		public Builder setDtHrSaida(Date dtHrSaida) {
+		public Builder setDtHrSaida(LocalDateTime dtHrSaida) {
 			this.dtHrSaida = dtHrSaida;
 			return this;
 		}
@@ -177,7 +177,7 @@ public class MovimentoVeiculoDTO implements Serializable {
 			return this;
 		}
 
-		public Builder setVersao(Date versao) {
+		public Builder setVersao(LocalDateTime versao) {
 			this.versao = versao;
 			return this;
 		}

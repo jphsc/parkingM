@@ -1,7 +1,7 @@
 package br.com.rhscdeveloper.model;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -41,13 +41,13 @@ public class MovimentoFinanceiroVO extends PanacheEntityBase implements Serializ
 	private Integer situacao;
 	
 	@Column(name = "mvf_versao", nullable = false)
-	private Date versao;
+	private LocalDateTime versao;
 	
 	public MovimentoFinanceiroVO() {
 		
 	}
 
-	public MovimentoFinanceiroVO(RegraFinanceiraVO regra, MovimentoVeiculoVO movimento, Double valor, SituacaoMovimento situacao, Date versao) {
+	public MovimentoFinanceiroVO(RegraFinanceiraVO regra, MovimentoVeiculoVO movimento, Double valor, SituacaoMovimento situacao, LocalDateTime versao) {
 		this.idRegra = regra;
 		this.idMovimento = movimento;
 		this.valor = valor;
@@ -87,11 +87,11 @@ public class MovimentoFinanceiroVO extends PanacheEntityBase implements Serializ
 		this.valor = valor;
 	}
 
-	public Date getVersao() {
+	public LocalDateTime getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Date versao) {
+	public void setVersao(LocalDateTime versao) {
 		this.versao = versao;
 	}
 

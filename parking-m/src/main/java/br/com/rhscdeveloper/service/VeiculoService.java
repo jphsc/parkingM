@@ -3,8 +3,8 @@ package br.com.rhscdeveloper.service;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.PropertyValueException;
@@ -146,7 +146,7 @@ public class VeiculoService {
 		
 		try {
 			Thread.sleep(4000);
-			VeiculoVO vo = new VeiculoVO(filtro.getModelo(), filtro.getMontadora(), new Date(), filtro.getPlaca(), new Date());
+			VeiculoVO vo = new VeiculoVO(filtro.getModelo(), filtro.getMontadora(), LocalDateTime.now(), filtro.getPlaca(), LocalDateTime.now());
 			
 			cadastrarVeiculoBase(vo);
 			return VeiculoRespostaDTO.newInstance(Arrays.asList(vo), TipoOperacao.CADASTRAR);

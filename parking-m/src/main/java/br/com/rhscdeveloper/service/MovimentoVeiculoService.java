@@ -2,8 +2,9 @@ package br.com.rhscdeveloper.service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,13 +49,13 @@ public class MovimentoVeiculoService {
 					.setTipoMovimento(tipoMovimento.getId())
 					.setDtHrEntrada(dto.getDtHrEntrada())
 					.setSituacao(SituacaoMovimento.ABERTO.getId()) // mv sempre nasce aberto | financeiro depende do tpMov
-					.setVersao(new Date()).build();
+					.setVersao(LocalDateTime.now()).build();
 			movVeiculo = (MovimentoVeiculoVO) persistirObjetoTransacional(movVeiculo);
 			
 			if(tipoMovimento == TipoMovimento.FINAL_SEMANA || tipoMovimento == TipoMovimento.MENSALISTA) {
 				valor = this.gerarValorMovimento(movVeiculo, regraFinanceira, dto.getDtHrEntrada());
 				
-				MovimentoFinanceiroVO movFinanceiro = new MovimentoFinanceiroVO(regraFinanceira, movVeiculo, valor, sitMovFinanceiro , new Date());
+				MovimentoFinanceiroVO movFinanceiro = new MovimentoFinanceiroVO(regraFinanceira, movVeiculo, valor, sitMovFinanceiro , LocalDateTime.now());
 				movFinanceiro = (MovimentoFinanceiroVO) persistirObjetoTransacional(movFinanceiro);
 			}
 			return MovimentoVeiculoRespostaDTO.newInstance(Arrays.asList(movVeiculo), TipoOperacao.CADASTRAR);
@@ -151,7 +152,7 @@ public class MovimentoVeiculoService {
 			RegraFinanceiraVO regra = (RegraFinanceiraVO) RegraFinanceiraVO.findByIdOptional(dto.getIdRegra()).orElseThrow(() -> new NullPointerException("Regra de id não "+dto.getIdRegra()+" encontrada"));;
 			Double valor = gerarValorMovimento(movVeiculo, regra, dto.getDtHrEntrada());
 			
-			MovimentoFinanceiroVO movFinanceiro = new MovimentoFinanceiroVO(regra, movVeiculo, valor, SituacaoMovimento.ENCERRADO, new Date());
+			MovimentoFinanceiroVO movFinanceiro = new MovimentoFinanceiroVO(regra, movVeiculo, valor, SituacaoMovimento.ENCERRADO, LocalDateTime.now());
 			movFinanceiro = (MovimentoFinanceiroVO) persistirObjetoTransacional(movFinanceiro);
 //			MovimentoFinanceiroVO.persist(movFinanceiro);
 			
@@ -186,8 +187,9 @@ public class MovimentoVeiculoService {
 	 * @param dataHoraEntrada - Data e hora de entrada do veículo
 	 * @return valor calculado do movimento do veiculo, considerando sua regra e entrada
 	 *  */
-	private Double gerarValorMovimento(MovimentoVeiculoVO movimento, RegraFinanceiraVO regra, Date entrada) {
-		Duration duracao = Duration.between(entrada.toInstant(), Instant.now());
+	private Double gerarValorMovimento(MovimentoVeiculoVO movimento, RegraFinanceiraVO regra, LocalDateTime entrada) {
+//		Duration duracao = Duration.between(entrada.toInstant(), Instant.now());
+		Duration duracao = Duration.between(entrada.toInstant(ZoneOffset.UTC), Instant.now());
 		long dias = Duration.ofDays(duracao.toMinutes()).toDays();
 		int horas = (int) Math.ceil(duracao.toMinutes()/60);
 		Double valor = 0.0;

@@ -1,7 +1,7 @@
 package br.com.rhscdeveloper.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import br.com.rhscdeveloper.model.MovimentoFinanceiroVO;
 import br.com.rhscdeveloper.model.MovimentoVeiculoVO;
@@ -15,14 +15,14 @@ public class MovimentoFinanceiroDTO implements Serializable {
     private MovimentoVeiculoVO idMovimento;
 	private Double valor;
 	private Integer situacao;
-	private Date versao;
+	private LocalDateTime versao;
 	
 	public MovimentoFinanceiroDTO() {
 		
 	}
 
 	public MovimentoFinanceiroDTO(RegraFinanceiraVO idRegra, MovimentoVeiculoVO idMovimento, Double valor,
-			Integer situacao, Date versao) {
+			Integer situacao, LocalDateTime versao) {
 		this.idRegra = idRegra;
 		this.idMovimento = idMovimento;
 		this.valor = valor;
@@ -62,11 +62,11 @@ public class MovimentoFinanceiroDTO implements Serializable {
 		this.situacao = situacao;
 	}
 
-	public Date getVersao() {
+	public LocalDateTime getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Date versao) {
+	public void setVersao(LocalDateTime versao) {
 		this.versao = versao;
 	}
 	

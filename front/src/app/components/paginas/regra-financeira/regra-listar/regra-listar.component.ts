@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { RegraFinanceira } from 'src/app/models/regra-financeira';
-import { RespostaReqBackend } from 'src/app/models/resposta.model';
 import { LoadingService } from 'src/app/services/loading.service';
 import { RegraFinanceiraService } from 'src/app/services/regra-financeira.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { Enumeradores } from 'src/app/utils/helper';
 
 @Component({
@@ -18,7 +19,8 @@ export class RegraListarComponent implements OnInit {
   loadingMessage$: Observable<string>;
   isLoaded: boolean = false;
 
-  constructor(private regraFinService: RegraFinanceiraService, private ls: LoadingService){
+  constructor(private regraFinService: RegraFinanceiraService, private ls: LoadingService
+    , private rota: Router, private ts:ToastService){
     this.isLoading$ = this.ls.isLoading$;
     this.loadingMessage$ = this.ls.loadingMessage$;
   }
@@ -29,25 +31,26 @@ export class RegraListarComponent implements OnInit {
 
   getAllRegras(): void {
     this.regraFinService.getAllRegras().subscribe({
-      next: (resp: RespostaReqBackend<RegraFinanceira>) => {
+      next: (resp) => {
         resp.registros.forEach(rf => {
-          const tipoCobranca:string = Enumeradores.factory('TipoCobranca').getDescricao(rf.tipoCobranca);
-          const tipoMovimento:string = Enumeradores.factory('TipoMovVeiculo').getDescricao(rf.tipoMovimento);
-          const situacao:string = Enumeradores.factory('Situacao').getDescricao(rf.situacao);
-
-          rf.tipoCobranca = tipoCobranca;
-          rf.tipoMovimento = tipoMovimento;
-          rf.situacao = situacao;
+          rf.tipoCobranca = Enumeradores.factory('TipoCobranca').getDescricao(rf.tipoCobranca);
+          rf.tipoMovimento = Enumeradores.factory('TipoMovVeiculo').getDescricao(rf.tipoMovimento);
+          rf.situacao = Enumeradores.factory('Situacao').getDescricao(rf.situacao);
 
           this.regras.push(rf);
-        })
+        });
+        this.isLoaded = true;
       },
       error: (err) => {
         console.error('Erro ao carregar regras financeiras:', err.error.mensagem);
-      },
-      complete: () => {
+        console.error(err);
+        this.ts.gerarToast("Não foi possível carregar as regras financeiras, tente novamente mais tarde", false);
         this.isLoaded = true;
-      },
+      }
     });
+  }
+
+  navEditarRegra(id: any){
+    this.rota.navigate([`/regra/editar/${id}`]);
   }
 }

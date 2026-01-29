@@ -24,9 +24,9 @@ public class RegraFinanceiraRespostaDTO {
 		
 		registrosPersistentes.stream().map(
 			vo -> new RegraFinanceiraDTO.Builder()
-			.setDtHrFimValidade(vo.getDtHrFimValidade())
+			.setDtFimValidade(vo.getDtFimValidade())
 			.setDescricao(vo.getDescricao())
-			.setDtHrInicioValidade(vo.getDtHrInicioValidade())
+			.setDtInicioValidade(vo.getDtInicioValidade())
 			.setId(vo.getId()).setSituacao(vo.getSituacao())
 			.setTipoCobranca(vo.getTipoCobranca())
 			.setTipoMovimento(vo.getTipoMovimento())

@@ -19,10 +19,10 @@
         <td>{{ regra.valor | currency:'BRL'}}</td>
         <td>{{ regra.tipoCobranca }}</td>
         <td>{{ regra.tipoMovimento }}</td>
-        <td>{{ regra.dtHrInicioValidade | date: 'dd/MM/yyyy'}}</td>
-        <td>{{ regra.dtHrFimValidade | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ regra.dtInicioValidade | date: 'dd/MM/yyyy'}}</td>
+        <td>{{ regra.dtFimValidade | date: 'dd/MM/yyyy' }}</td>
         <td>{{ regra.situacao }}</td>
-        <td><button class="btn btn-primary btn-acao">Editar</button></td>
+        <td><button class="btn btn-primary btn-acao" (click)="navEditarRegra(regra.id)">Editar</button></td>
       </tr>
     </tbody>
   </table>

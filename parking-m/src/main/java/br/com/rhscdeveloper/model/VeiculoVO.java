@@ -1,9 +1,9 @@
 package br.com.rhscdeveloper.model;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,14 +43,14 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable, Compar
 	private String montadora;
 	
 	@Column(name = "vei_dt_registro", nullable = false)
-	private Date dtRegistro;
+	private LocalDateTime dtRegistro;
 	
 	@Column(name = "vei_placa", nullable = false, unique = true, length = 7)
 	private String placa;
 	
 	@Version
 	@Column(name = "vei_versao", nullable = false)
-	private Date versao;
+	private LocalDateTime versao;
 	
 	@Transient
 	private List<MovimentoVeiculoVO> movimentos = new ArrayList<>();
@@ -59,7 +59,7 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable, Compar
 		
 	}
 
-	public VeiculoVO(String modelo, String montadora, Date dtRegistro, String placa, Date versao) {
+	public VeiculoVO(String modelo, String montadora, LocalDateTime dtRegistro, String placa, LocalDateTime versao) {
 		this.modelo = modelo;
 		this.montadora = montadora;
 		this.dtRegistro = dtRegistro;
@@ -67,7 +67,7 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable, Compar
 		this.versao = versao;
 	}
 
-	public VeiculoVO(Integer id, String modelo, String montadora, Date dtRegistro, String placa, Date versao) {
+	public VeiculoVO(Integer id, String modelo, String montadora, LocalDateTime dtRegistro, String placa, LocalDateTime versao) {
 		this.id = id;
 		this.modelo = modelo;
 		this.montadora = montadora;
@@ -100,11 +100,11 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable, Compar
 		this.montadora = montadora;
 	}
 
-	public Date getDtRegistro() {
+	public LocalDateTime getDtRegistro() {
 		return dtRegistro;
 	}
 
-	public void setDtRegistro(Date dtRegistro) {
+	public void setDtRegistro(LocalDateTime dtRegistro) {
 		this.dtRegistro = dtRegistro;
 	}
 
@@ -116,11 +116,11 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable, Compar
 		this.placa = placa.toUpperCase();
 	}
 
-	public Date getVersao() {
+	public LocalDateTime getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Date versao) {
+	public void setVersao(LocalDateTime versao) {
 		this.versao = versao;
 	}
 
@@ -169,7 +169,7 @@ public class VeiculoVO extends PanacheEntityBase implements Serializable, Compar
 		voPersistente.montadora = dto.getMontadora();
 		voPersistente.dtRegistro = dto.getDtRegistro();
 		voPersistente.placa = dto.getPlaca().toUpperCase();
-		voPersistente.versao = Objects.isNull(dto.getVersao()) ? new Date() : dto.getVersao();
+		voPersistente.versao = Objects.isNull(dto.getVersao()) ? LocalDateTime.now() : dto.getVersao();
 		
 		return voPersistente;
 	}

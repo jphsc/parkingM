@@ -35,7 +35,7 @@ export class MovveiculoDetalheComponent implements OnInit {
     this.mvs.getMovimentoById(idMovVeiculo)
       .subscribe({
         next: (resp) => {
-          resp.registros.forEach((mv:MovimentoVeiculo) => {
+          resp.registros.forEach((mv) => {
             let situacao = Enumeradores.factory('SituacaoMovimento').getDescricao(mv.situacao);
             let tipoMovimento = Enumeradores.factory('TipoMovVeiculo').getDescricao(mv.tipoMovimento);
 

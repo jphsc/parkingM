@@ -14,8 +14,27 @@ export class RegraFinanceiraService {
 
   constructor(private http: HttpClient) { }
 
+  getRegraById(id:number): Observable<RespostaReqBackend<RegraFinanceira>> {
+    return this.http.get<RespostaReqBackend<RegraFinanceira>>(`${this.baseUrlBackend}/${id}`);
+  }
+
   getAllRegras(): Observable<RespostaReqBackend<RegraFinanceira>> {
-    return this.http
-      .get<RespostaReqBackend<RegraFinanceira>>(`${this.baseUrlBackend}/regras`);
+    return this.http.get<RespostaReqBackend<RegraFinanceira>>(`${this.baseUrlBackend}/regras`);
+  }
+
+  getRegraByFilter(regra:RegraFinanceira): Observable<RespostaReqBackend<RegraFinanceira>> {
+    return this.http.post<RespostaReqBackend<RegraFinanceira>>(`${this.baseUrlBackend}`, regra);
+  }
+
+  createRegra(regra:RegraFinanceira): Observable<RespostaReqBackend<RegraFinanceira>> {
+    return this.http.post<RespostaReqBackend<RegraFinanceira>>(`${this.baseUrlBackend}/cadastrar`, regra);
+  }
+
+  updateRegra(regra:RegraFinanceira): Observable<RespostaReqBackend<RegraFinanceira>> {
+    return this.http.put<RespostaReqBackend<RegraFinanceira>>(`${this.baseUrlBackend}/atualizar`, regra);
+  }
+
+  deleteRegra(id:number): Observable<RespostaReqBackend<RegraFinanceira>> {
+    return this.http.delete<RespostaReqBackend<RegraFinanceira>>(`${this.baseUrlBackend}/${id}`);
   }
 }

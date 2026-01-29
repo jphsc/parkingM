@@ -2,8 +2,11 @@ package br.com.rhscdeveloper.service;
 
 import static java.util.Objects.isNull;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.hibernate.PropertyValueException;
 import org.jboss.logging.Logger;
@@ -14,6 +17,7 @@ import com.google.gson.Gson;
 import br.com.rhscdeveloper.dto.ErroDTO;
 import br.com.rhscdeveloper.dto.RegraFinanceiraDTO;
 import br.com.rhscdeveloper.dto.RegraFinanceiraRespostaDTO;
+import br.com.rhscdeveloper.enumerator.Enums.Situacao;
 import br.com.rhscdeveloper.enumerator.Enums.TipoOperacao;
 import br.com.rhscdeveloper.exception.GlobalException;
 import br.com.rhscdeveloper.model.RegraFinanceiraVO;
@@ -34,13 +38,11 @@ public class RegraFinanceiraService {
 		
 		try {
 			Thread.sleep(4000);	
-			RegraFinanceiraVO vo = RegraFinanceiraVO.findById(id);
-			if(isNull(vo)) {
-				throw new NullPointerException(ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);
-			}
+			RegraFinanceiraVO vo = (RegraFinanceiraVO) RegraFinanceiraVO
+					.findByIdOptional(id).orElseThrow(() -> new NoSuchElementException(ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO));
 			
 			return RegraFinanceiraRespostaDTO.newInstance(Arrays.asList(vo), TipoOperacao.CONSULTAR);
-		} catch (UnhandledException | NullPointerException e) {
+		} catch (UnhandledException | NoSuchElementException e) {
 			LOG.info(e.getMessage());
 			throw new GlobalException(ConstantesSistema.COD_ERRO_INEXISTENTE, e.getMessage());
 			
@@ -54,8 +56,21 @@ public class RegraFinanceiraService {
 
 	public RegraFinanceiraRespostaDTO obterRegrasFinanceiras() {
 		try {
-			Thread.sleep(4000);	
-			return RegraFinanceiraRespostaDTO.newInstance(RegraFinanceiraVO.findAll(Sort.by("id")).list(), TipoOperacao.CONSULTAR);
+			Thread.sleep(4000);
+			
+			List<RegraFinanceiraVO> regras = RegraFinanceiraVO.findAll(Sort.by("id")).list();
+			
+			if(regras.isEmpty()) {
+				throw new NoSuchElementException(ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);
+			}
+			
+			return RegraFinanceiraRespostaDTO.newInstance(regras, TipoOperacao.CONSULTAR);
+			
+		} catch (NoSuchElementException e) {
+			LOG.warn(e.getMessage());
+			ErroDTO erro = GeracaoException.mensagemExceptionGenerica(e);
+			throw new GlobalException(erro.getCodigo(), erro.getMensagem());
+			
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
 			e.printStackTrace();
@@ -67,10 +82,17 @@ public class RegraFinanceiraService {
 	public RegraFinanceiraRespostaDTO obterRegraFinanceiraFiltro(RegraFinanceiraDTO filtro) {
 		try {
 			Thread.sleep(4000);	
-			return RegraFinanceiraRespostaDTO.newInstance(RegraFinanceiraVO.findAll(filtro), TipoOperacao.CONSULTAR);
-		} catch (NullPointerException e) {
+			
+			List<RegraFinanceiraVO> regras = RegraFinanceiraVO.findAll(filtro);
+			
+			if(regras.isEmpty()) {
+				throw new NoSuchElementException(ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);
+			}
+			
+			return RegraFinanceiraRespostaDTO.newInstance(regras, TipoOperacao.CONSULTAR);
+		} catch (NoSuchElementException e) {
 			LOG.info(e.getMessage());
-			throw new GlobalException(ConstantesSistema.COD_ERRO_INEXISTENTE, ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);	
+			throw new GlobalException(ConstantesSistema.COD_ERRO_INEXISTENTE, e.getMessage());	
 		
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -89,10 +111,10 @@ public class RegraFinanceiraService {
 				throw new NoSuchFieldError(ConstantesSistema.MSG_ERRO_ID);
 			}
 			
-			RegraFinanceiraVO newVo = atualizarRegraFinanceiraTransacional(filtro);
+			RegraFinanceiraVO newVo = this.atualizarRegraFinanceiraTransacional(filtro);
 			
 			return RegraFinanceiraRespostaDTO.newInstance(Arrays.asList(newVo), TipoOperacao.EDITAR);
-		} catch (NullPointerException e) {
+		} catch (NoSuchElementException e) {
 			LOG.info(e.getMessage());
 			throw new GlobalException(ConstantesSistema.COD_ERRO_INEXISTENTE, ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);
 			
@@ -111,6 +133,11 @@ public class RegraFinanceiraService {
 	@Transactional
 	public RegraFinanceiraVO atualizarRegraFinanceiraTransacional(RegraFinanceiraDTO filtro) {
 		RegraFinanceiraVO voPersistente = RegraFinanceiraVO.findById(filtro.getId());
+		
+		if(filtro.getDtFimValidade().isBefore(LocalDate.now())) {
+			filtro.setSituacao(Situacao.INATIVO.getId());
+		}
+		
 		return RegraFinanceiraVO.dtoToVo(voPersistente, filtro);
 	} 
 	
@@ -120,12 +147,12 @@ public class RegraFinanceiraService {
 		try {
 			Thread.sleep(4000);	
 			RegraFinanceiraVO vo = new RegraFinanceiraVO.Builder().setDescricao(filtro.getDescricao())
-					.setDtHrInicioValidade(filtro.getDtHrInicioValidade()).setDtHrFimValidade(filtro.getDtHrFimValidade())
+					.setDtInicioValidade(filtro.getDtInicioValidade()).setDtFimValidade(filtro.getDtFimValidade())
 					.setSituacao(filtro.getSituacao()).setTipoCobranca(filtro.getTipoCobranca())
-					.setTipoMovimento(filtro.getTipoMovimento()).setValor(filtro.getValor()).setVersao(new Date())
+					.setTipoMovimento(filtro.getTipoMovimento()).setValor(filtro.getValor()).setVersao(LocalDateTime.now())
 					.build();
 			
-			criarRegraFinanceiraTransacional(vo);
+			this.criarRegraFinanceiraTransacional(vo);
 			return RegraFinanceiraRespostaDTO.newInstance(Arrays.asList(vo), TipoOperacao.CADASTRAR);
 			
 		} catch(PropertyValueException e) { 
@@ -148,7 +175,7 @@ public class RegraFinanceiraService {
 	
 	/**
 	 * <p>Remove uma regra financeira pelo identificador da regra.</p>
-	 * @param id - Integer - Identificador da regra
+	 * @param id - Identificador da regra
 	 * */
 	public String deletarRegraFinanceira(Integer id) {
 		try {
@@ -156,13 +183,13 @@ public class RegraFinanceiraService {
 			RegraFinanceiraVO regra = RegraFinanceiraVO.findById(id);
 			
 			if(isNull(regra)) {
-				throw new NullPointerException(ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO); 
+				throw new NoSuchElementException(ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO); 
 			}
 			
-			deletarRegraFinanceiraTransacional(id);
+			this.deletarRegraFinanceiraTransacional(id);
 			return new Gson().toJson(new MensagemResposta().gerarMensagem(TipoOperacao.EXCLUIR, RegraFinanceiraVO.class));
 			
-		} catch (NullPointerException e) {
+		} catch (NoSuchElementException e) {
 			LOG.info(e.getMessage());
 			throw new GlobalException(ConstantesSistema.COD_ERRO_INEXISTENTE, ConstantesSistema.MSG_ERRO_NAO_ENCONTRADO);
 			

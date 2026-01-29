@@ -25,11 +25,9 @@ export abstract class Enumeradores {
           if(enumerador.hasOwnProperty(key)) {
             if(enumerador[key].id === id) {
               desc = enumerador[key].descricao;
-              // return enumerador[key].descricao;
             }
           }
         }
-        // return undefined;
         return desc;
       }
     }
@@ -73,12 +71,3 @@ export abstract class Enumeradores {
     EXCLUIR: { id: 17, descricao: 'Excluir' }
   };
 }
-
-// export abstract class Utils {
-//   public static formatarPlaca(placa: string): string {
-
-//     let x = placa.toUpperCase().replaceAll(/[^a-zA-Z0-9]/g, '');
-//     console.log(x);
-//     return x;
-//   }
-// }

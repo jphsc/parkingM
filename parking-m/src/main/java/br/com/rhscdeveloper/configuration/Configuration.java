@@ -1,6 +1,7 @@
 package br.com.rhscdeveloper.configuration;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.flywaydb.core.Flyway;
@@ -55,29 +56,29 @@ public class Configuration {
 //			applyMigrations();
 			
 			if(VeiculoVO.findAll().list().isEmpty()) {
-				VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", new Date(), "OTO8226", new Date()));
-				VeiculoVO.persist(new VeiculoVO("Onix", "Chevrolet", new Date(), "OTO8221", new Date()));
-				VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", new Date(), "OTO8228", new Date()));
+				VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", LocalDateTime.now(), "OTO8226", LocalDateTime.now()));
+				VeiculoVO.persist(new VeiculoVO("Onix", "Chevrolet", LocalDateTime.now(), "OTO8221", LocalDateTime.now()));
+				VeiculoVO.persist(new VeiculoVO("HB20", "Hyundai", LocalDateTime.now(), "OTO8228", LocalDateTime.now()));
 			}
 			
 			if(RegraFinanceiraVO.findAll().list().isEmpty()) {
-				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Hora semanal", 9.00, TipoCobranca.INDIFERENTE, TipoMovimento.DIA, new Date(), new Date(), Situacao.ATIVO, new Date()));
-				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Hora final de semana", 7.00, TipoCobranca.INDIFERENTE, TipoMovimento.FINAL_SEMANA, new Date(), new Date(), Situacao.ATIVO, new Date()));
-				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Mensalista em dinheiro", 250.50, TipoCobranca.DINHEIRO, TipoMovimento.MENSALISTA, new Date(), new Date(), Situacao.ATIVO, new Date()));
-				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Mensalista no cartão", 270.79, TipoCobranca.CREDITO, TipoMovimento.MENSALISTA, new Date(), new Date(), Situacao.ATIVO, new Date()));
-				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Fração de hora util indiferente", 5.50, TipoCobranca.INDIFERENTE, TipoMovimento.DIA, new Date(), new Date(), Situacao.ATIVO, new Date()));
-				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Fração de hora final de semana indiferente", 4.00, TipoCobranca.INDIFERENTE, TipoMovimento.FINAL_SEMANA, new Date(), new Date(), Situacao.ATIVO, new Date()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Hora semanal", 9.00, TipoCobranca.INDIFERENTE, TipoMovimento.DIA, LocalDate.now(), LocalDate.now(), Situacao.ATIVO, LocalDateTime.now()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Hora final de semana", 7.00, TipoCobranca.INDIFERENTE, TipoMovimento.FINAL_SEMANA, LocalDate.now(), LocalDate.now(), Situacao.ATIVO, LocalDateTime.now()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Mensalista em dinheiro", 250.50, TipoCobranca.DINHEIRO, TipoMovimento.MENSALISTA, LocalDate.now(), LocalDate.now(), Situacao.ATIVO, LocalDateTime.now()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Mensalista no cartão", 270.79, TipoCobranca.CREDITO, TipoMovimento.MENSALISTA, LocalDate.now(), LocalDate.now(), Situacao.ATIVO, LocalDateTime.now()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Fração de hora util indiferente", 5.50, TipoCobranca.INDIFERENTE, TipoMovimento.DIA, LocalDate.now(), LocalDate.now(), Situacao.ATIVO, LocalDateTime.now()));
+				RegraFinanceiraVO.persist(new RegraFinanceiraVO("Fração de hora final de semana indiferente", 4.00, TipoCobranca.INDIFERENTE, TipoMovimento.FINAL_SEMANA, LocalDate.now(), LocalDate.now(), Situacao.ATIVO, LocalDateTime.now()));
 			}
 			
 			if(MovimentoVeiculoVO.findAll().list().isEmpty()) {
-				MovimentoVeiculoVO.persist(new MovimentoVeiculoVO(VeiculoVO.findAll().firstResult(), TipoMovimento.DIA.getId(), new Date(), new Date(), SituacaoMovimento.ENCERRADO.getId(), new Date()));
+				MovimentoVeiculoVO.persist(new MovimentoVeiculoVO(VeiculoVO.findAll().firstResult(), TipoMovimento.DIA.getId(), LocalDateTime.now(), LocalDateTime.now(), SituacaoMovimento.ENCERRADO.getId(), LocalDateTime.now()));
 			}
 			
 			if(MovimentoFinanceiroVO.findAll().list().isEmpty()) {
 				RegraFinanceiraVO rf = RegraFinanceiraVO.findAll().firstResult();
 				MovimentoVeiculoVO mv = MovimentoVeiculoVO.findAll().firstResult();
 				
-				MovimentoFinanceiroVO.persist(new MovimentoFinanceiroVO(rf, mv, 2.00, SituacaoMovimento.ABERTO, new Date()));
+				MovimentoFinanceiroVO.persist(new MovimentoFinanceiroVO(rf, mv, 2.00, SituacaoMovimento.ABERTO, LocalDateTime.now()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

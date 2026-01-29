@@ -1,7 +1,8 @@
 package br.com.rhscdeveloper.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,25 +15,25 @@ public class RegraFinanceiraDTO implements Serializable {
 	private Double valor;
 	private Integer tipoCobranca;
 	private Integer tipoMovimento;
-	private Date dtHrInicioValidade;
-	private Date dtHrFimValidade;
+	private LocalDate dtInicioValidade;
+	private LocalDate dtFimValidade;
 	private Integer situacao;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-	private Date versao;	
+	private LocalDateTime versao;	
 	
 	public RegraFinanceiraDTO() {
 		
 	}
 
 	public RegraFinanceiraDTO(Integer id, String descricao, Double valor, Integer tipoCobranca, Integer tipoMovimento,
-			Date dtHrInicioValidade, Date dtHrFimValidade, Integer situacao, Date versao) {
+			LocalDate dtInicioValidade, LocalDate dtFimValidade, Integer situacao, LocalDateTime versao) {
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
 		this.tipoCobranca = tipoCobranca;
 		this.tipoMovimento = tipoMovimento;
-		this.dtHrInicioValidade = dtHrInicioValidade;
-		this.dtHrFimValidade = dtHrFimValidade;
+		this.dtInicioValidade = dtInicioValidade;
+		this.dtFimValidade = dtFimValidade;
 		this.situacao = situacao;
 		this.versao = versao;
 	}
@@ -43,8 +44,8 @@ public class RegraFinanceiraDTO implements Serializable {
 		this.valor = build.valor;
 		this.tipoCobranca = build.tipoCobranca;
 		this.tipoMovimento = build.tipoMovimento;
-		this.dtHrInicioValidade = build.dtHrInicioValidade;
-		this.dtHrFimValidade = build.dtHrFimValidade;
+		this.dtInicioValidade = build.dtInicioValidade;
+		this.dtFimValidade = build.dtFimValidade;
 		this.situacao = build.situacao;
 		this.versao = build.versao;
 	}
@@ -89,20 +90,20 @@ public class RegraFinanceiraDTO implements Serializable {
 		this.tipoMovimento = tipoMovimento;
 	}
 
-	public Date getDtHrInicioValidade() {
-		return dtHrInicioValidade;
+	public LocalDate getDtInicioValidade() {
+		return dtInicioValidade;
 	}
 
-	public void setDtHrInicioValidade(Date dtHrInicioValidade) {
-		this.dtHrInicioValidade = dtHrInicioValidade;
+	public void setDtInicioValidade(LocalDate dtInicioValidade) {
+		this.dtInicioValidade = dtInicioValidade;
 	}
 
-	public Date getDtHrFimValidade() {
-		return dtHrFimValidade;
+	public LocalDate getDtFimValidade() {
+		return dtFimValidade;
 	}
 
-	public void setDtHrFimValidade(Date dtHrFimValidade) {
-		this.dtHrFimValidade = dtHrFimValidade;
+	public void setDtFimValidade(LocalDate dtFimValidade) {
+		this.dtFimValidade = dtFimValidade;
 	}
 
 	public Integer getSituacao() {
@@ -113,11 +114,11 @@ public class RegraFinanceiraDTO implements Serializable {
 		this.situacao = situacao;
 	}
 
-	public Date getVersao() {
+	public LocalDateTime getVersao() {
 		return versao;
 	}
 
-	public void setVersao(Date versao) {
+	public void setVersao(LocalDateTime versao) {
 		this.versao = versao;
 	}
 	
@@ -128,10 +129,10 @@ public class RegraFinanceiraDTO implements Serializable {
 		private Double valor;
 		private Integer tipoCobranca;
 		private Integer tipoMovimento;
-		private Date dtHrInicioValidade;
-		private Date dtHrFimValidade;
+		private LocalDate dtInicioValidade;
+		private LocalDate dtFimValidade;
 		private Integer situacao;
-		private Date versao;
+		private LocalDateTime versao;
 		
 		public RegraFinanceiraDTO build() {
 			return new RegraFinanceiraDTO(this);
@@ -162,13 +163,13 @@ public class RegraFinanceiraDTO implements Serializable {
 			return this;
 		}
 		
-		public Builder setDtHrInicioValidade(Date dtHrInicioValidade) {
-			this.dtHrInicioValidade = dtHrInicioValidade;
+		public Builder setDtInicioValidade(LocalDate dtInicioValidade) {
+			this.dtInicioValidade = dtInicioValidade;
 			return this;
 		}
 		
-		public Builder setDtHrFimValidade(Date dtHrFimValidade) {
-			this.dtHrFimValidade = dtHrFimValidade;
+		public Builder setDtFimValidade(LocalDate dtFimValidade) {
+			this.dtFimValidade = dtFimValidade;
 			return this;
 		}
 		
@@ -177,7 +178,7 @@ public class RegraFinanceiraDTO implements Serializable {
 			return this;
 		}
 		
-		public Builder setVersao(Date versao) {
+		public Builder setVersao(LocalDateTime versao) {
 			this.versao = versao;
 			return this;
 		}

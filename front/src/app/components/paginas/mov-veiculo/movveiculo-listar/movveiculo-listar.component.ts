@@ -5,6 +5,7 @@ import { MovimentoVeiculo } from 'src/app/models/movimento-veiculo.model';
 import { RespostaReqBackend } from 'src/app/models/resposta.model';
 import { LoadingService } from 'src/app/services/loading.service';
 import { MovimentoVeiculoService } from 'src/app/services/movimento-veiculo.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { Enumeradores } from 'src/app/utils/helper';
 
 @Component({
@@ -20,7 +21,7 @@ export class MovveiculoListarComponent implements OnInit {
   isLoaded: boolean = false;
 
   constructor(private mvs: MovimentoVeiculoService, private rota: Router
-    , private ls: LoadingService){
+    , private ls: LoadingService, private ts: ToastService){
       this.isLoading$ = this.ls.isLoading$;
       this.loadingMessage$ = this.ls.loadingMessage$;
     }
@@ -40,12 +41,12 @@ export class MovveiculoListarComponent implements OnInit {
             mv.situacao = situacao;
 
             this.movimentos.push(mv);
-          })
+          });
+        this.isLoaded = true;
         },
         error: (err) => {
           console.error('Erro ao carregar movimentos:', err.error.mensagem);
-        },
-        complete: () => {
+          this.ts.gerarToast("Não foi possível carregar os veículos, tente novamente mais tarde", false);
           this.isLoaded = true;
         }
       }

@@ -16,6 +16,7 @@ import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { provideNgxMask } from 'ngx-mask';
 
 registerLocaleData(localePt);
 
@@ -41,6 +42,7 @@ registerLocaleData(localePt);
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     { provide: LOCALE_ID, useValue: 'pt-BR' },
+    provideNgxMask()
 
   ],
   bootstrap: [AppComponent]
